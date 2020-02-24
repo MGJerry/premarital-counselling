@@ -1,17 +1,15 @@
-# premarital-counselling
-swp391-topic3
-
 # Spring Boot JWT Authentication example with Spring Security & Spring Data JPA
 
-## User Registration, User Login and Authorization process.
-The diagram shows flow of how we implement User Registration, User Login and Authorization process.
+For more detail, please visit:
+> [Secure Spring Boot App with Spring Security & JWT Authentication](https://bezkoder.com/spring-boot-jwt-authentication/)
 
-![spring-boot-jwt-authentication-spring-security-flow](spring-boot-jwt-authentication-spring-security-flow.png)
+> [For MongoDB](https://bezkoder.com/spring-boot-jwt-auth-mongodb/)
 
-## Spring Boot Server Architecture with Spring Security
-You can have an overview of our Spring Boot Server with the diagram below:
+# Fullstack
 
-![spring-boot-jwt-authentication-spring-security-architecture](spring-boot-jwt-authentication-spring-security-architecture.png)
+> [Spring Boot + Vue.js JWT Authentication](https://bezkoder.com/spring-boot-vue-js-authentication-jwt-spring-security/)
+
+> [Spring Boot + Angular 8 JWT Authentication](https://bezkoder.com/angular-spring-boot-jwt-auth/)
 
 ## Dependency
 – If you want to use PostgreSQL:
@@ -25,8 +23,8 @@ You can have an overview of our Spring Boot Server with the diagram below:
 – or MySQL:
 ```xml
 <dependency>
-  <groupId>com.mysql</groupId>
-  <artifactId>mysql-connector-j</artifactId>
+  <groupId>mysql</groupId>
+  <artifactId>mysql-connector-java</artifactId>
   <scope>runtime</scope>
 </dependency>
 ```
@@ -50,16 +48,16 @@ bezkoder.app.jwtExpirationMs= 86400000
 ```
 - For MySQL
 ```
-spring.datasource.url=jdbc:mysql://localhost:3306/testdb_spring?useSSL=false
-spring.datasource.username=root
-spring.datasource.password=123456
+spring.datasource.url= jdbc:mysql://localhost:3306/testdb?useSSL=false
+spring.datasource.username= root
+spring.datasource.password= 123456
 
-spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQLDialect
-spring.jpa.hibernate.ddl-auto=update
+spring.jpa.properties.hibernate.dialect= org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto= update
 
 # App Properties
-bezkoder.app.jwtSecret= ======================BezKoder=Spring===========================
-bezkoder.app.jwtExpirationMs=86400000
+bezkoder.app.jwtSecret= bezKoderSecretKey
+bezkoder.app.jwtExpirationMs= 86400000
 ```
 ## Run Spring Boot application
 ```
@@ -72,14 +70,3 @@ INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
 INSERT INTO roles(name) VALUES('ROLE_ADMIN');
 ```
-
-For more detail, please visit:
-> [Secure Spring Boot with Spring Security & JWT Authentication](https://bezkoder.com/spring-boot-jwt-authentication/)
-
-> [For MongoDB](https://bezkoder.com/spring-boot-jwt-auth-mongodb/)
-
-## Refresh Token
-
-![spring-boot-refresh-token-jwt-example-flow](spring-boot-refresh-token-jwt-example-flow.png)
-
-For instruction: [Spring Boot Refresh Token with JWT example](https://bezkoder.com/spring-boot-refresh-token-jwt/)

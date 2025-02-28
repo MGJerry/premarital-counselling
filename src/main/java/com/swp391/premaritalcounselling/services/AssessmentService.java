@@ -79,7 +79,7 @@ public class AssessmentService {
         return new ResponseEntity<>("Success", HttpStatus.CREATED);
     }
 
-    public ResponseEntity<AssessmentQuestion> updateAssessment(Long id, AssessmentRequest request) {
+    public ResponseEntity<Assessment> updateAssessment(Long id, AssessmentRequest request) {
         return assessmentRepository.findById(id).map(assessment -> {
             List<AssessmentQuestion> questions = assessment.getQuestions();
             for (AssessmentQuestionRequest question : request.questions) {

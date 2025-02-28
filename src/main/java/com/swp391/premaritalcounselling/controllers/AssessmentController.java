@@ -1,9 +1,43 @@
 package com.swp391.premaritalcounselling.controllers;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.swp391.premaritalcounselling.models.Assessment;
+import com.swp391.premaritalcounselling.payload.request.AssessmentRequest;
+import com.swp391.premaritalcounselling.services.AssessmentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/test/assessments")
 public class AssessmentController {
+
+    @Autowired
+    private AssessmentService questionService;
+
+    @GetMapping
+    public ResponseEntity<List<Assessment>> getAllCategories() {
+        return questionService.getAllAssessments();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Assessment> getById(@PathVariable Long id) {
+        return questionService.getAssessmentById(id);
+    }
+
+    @PostMapping
+    public ResponseEntity<String> create(@RequestBody AssessmentRequest category) {
+        return questionService.createAssessment(category);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Assessment> update(@PathVariable Long id, @RequestBody AssessmentRequest request) {
+        return questionService.updateAssessment(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) {
+        return questionService.deleteAssessment(id);
+    }
 }

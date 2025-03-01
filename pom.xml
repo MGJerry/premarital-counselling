@@ -78,8 +78,7 @@
 			<artifactId>mysql-connector-j</artifactId>
 			<version>9.1.0</version>
 		</dependency>
-    
-		</dependency>
+
 		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

@@ -1,9 +1,9 @@
 package com.example.demo.repository;
 
-import com.example.demo.models.Assessment;
-import com.example.demo.models.AssessmentCategory;
-import com.example.demo.models.AssessmentResult;
-import com.example.demo.models.Member;
+import com.example.demo.model.Assessment;
+import com.example.demo.model.AssessmentCategory;
+import com.example.demo.model.AssessmentResult;
+import com.example.demo.model.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

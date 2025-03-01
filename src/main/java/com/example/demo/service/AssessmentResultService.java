@@ -1,7 +1,7 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
-import com.example.demo.models.Assessment;
-import com.example.demo.models.AssessmentQuestion;
+import com.example.demo.model.Assessment;
+import com.example.demo.model.AssessmentQuestion;
 import com.example.demo.payload.request.DoAssessmentRequest;
 import com.example.demo.repository.AssessmentCategoryRepository;
 import com.example.demo.repository.AssessmentQuestionRepository;

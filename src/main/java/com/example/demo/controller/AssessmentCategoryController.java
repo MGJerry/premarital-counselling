@@ -1,7 +1,7 @@
-package com.example.demo.controllers;
+package com.example.demo.controller;
 
-import com.example.demo.models.AssessmentCategory;
-import com.example.demo.services.AssessmentCategoryService;
+import com.example.demo.model.AssessmentCategory;
+import com.example.demo.service.AssessmentCategoryService;
 import com.example.demo.payload.request.AssessmentCategoryRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

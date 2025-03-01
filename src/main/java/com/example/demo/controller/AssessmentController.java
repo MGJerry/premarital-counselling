@@ -1,7 +1,7 @@
-package com.example.demo.controllers;
+package com.example.demo.controller;
 
-import com.example.demo.models.Assessment;
-import com.example.demo.services.AssessmentService;
+import com.example.demo.model.Assessment;
+import com.example.demo.service.AssessmentService;
 import com.example.demo.payload.request.AssessmentRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

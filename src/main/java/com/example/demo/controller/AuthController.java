@@ -1,13 +1,13 @@
-package com.example.demo.controllers;
+package com.example.demo.controller;
 
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.example.demo.models.ERole;
-import com.example.demo.models.Role;
-import com.example.demo.models.User;
+import com.example.demo.model.ERole;
+import com.example.demo.model.Role;
+import com.example.demo.model.User;
 import com.example.demo.payload.request.SignupRequest;
 import com.example.demo.payload.response.JwtResponse;
 import com.example.demo.payload.response.MessageResponse;

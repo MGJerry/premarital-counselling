@@ -1,6 +1,6 @@
-package com.example.demo.services;
+package com.example.demo.service;
 
-import com.example.demo.models.AssessmentCategory;
+import com.example.demo.model.AssessmentCategory;
 import com.example.demo.payload.request.AssessmentCategoryRequest;
 import com.example.demo.repository.AssessmentCategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

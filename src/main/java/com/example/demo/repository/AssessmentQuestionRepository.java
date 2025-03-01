@@ -1,7 +1,7 @@
 package com.example.demo.repository;
 
-import com.example.demo.models.AssessmentCategory;
-import com.example.demo.models.AssessmentQuestion;
+import com.example.demo.model.AssessmentCategory;
+import com.example.demo.model.AssessmentQuestion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

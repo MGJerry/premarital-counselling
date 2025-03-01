@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.User;
-import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.repository.AuthenticationRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

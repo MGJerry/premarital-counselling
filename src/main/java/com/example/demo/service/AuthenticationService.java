@@ -4,7 +4,7 @@ import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UserRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
-import com.example.demo.respository.AuthenticationRepository;
+import com.example.demo.repository.AuthenticationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

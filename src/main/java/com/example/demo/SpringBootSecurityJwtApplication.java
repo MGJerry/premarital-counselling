@@ -1,15 +1,17 @@
-package com.example.demo;
+// Use Duong's application instead
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-@SpringBootApplication
-@EnableJpaRepositories(basePackages = "com.swp391.premaritalcounselling.repository")
-public class SpringBootSecurityJwtApplication {
-
-	public static void main(String[] args) {
-    SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
-	}
-
-}
+//package com.example.demo;
+//
+//import org.springframework.boot.SpringApplication;
+//import org.springframework.boot.autoconfigure.SpringBootApplication;
+//import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+//
+//@SpringBootApplication
+//@EnableJpaRepositories(basePackages = "com.swp391.premaritalcounselling.repository")
+//public class SpringBootSecurityJwtApplication {
+//
+//	public static void main(String[] args) {
+//    SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
+//	}
+//
+//}

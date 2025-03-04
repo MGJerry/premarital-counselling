@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.model.AssessmentCategory;
 import com.example.demo.service.AssessmentCategoryService;
 import com.example.demo.payload.request.AssessmentCategoryRequest;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/test/assessment-categories")
+@SecurityRequirement(name = "api")
 public class AssessmentCategoryController {
 
     @Autowired

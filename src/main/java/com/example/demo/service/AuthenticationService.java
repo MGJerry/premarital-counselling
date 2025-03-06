@@ -48,14 +48,14 @@ public class AuthenticationService implements UserDetailsService {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getUsername(),
+                            authenticationRequest.getEmail(),
                             authenticationRequest.getPassword()
                     )
             );
         } catch (Exception e) {
             throw new NullPointerException("Wrong email or password");
         }
-        User user = authenticationRepository.findByUsername(authenticationRequest.getUsername()).orElseThrow();
+        User user = authenticationRepository.findByUsername(authenticationRequest.getEmail()).orElseThrow();
         String token = tokenService.generateToken(user);
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();

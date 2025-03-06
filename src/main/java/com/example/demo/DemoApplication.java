@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
-@OpenAPIDefinition(info = @Info(title = "Duongg", version = "1.0", description = "API"))
+@OpenAPIDefinition(info = @Info(title = "Premarital-counselling", version = "1.0", description = "API"))
 @EnableJpaRepositories(basePackages = "com.example.demo.repository")
 public class DemoApplication {
 

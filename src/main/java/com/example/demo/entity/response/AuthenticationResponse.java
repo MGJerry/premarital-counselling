@@ -1,5 +1,7 @@
 package com.example.demo.entity.response;
 
+import com.example.demo.model.ERole;
+
 public class AuthenticationResponse {
     public long id ;
     public String username;
@@ -7,17 +9,27 @@ public class AuthenticationResponse {
     public String fullName;
     public String phone;
     public String token;
+    public ERole role;
 
     public AuthenticationResponse() {
     }
 
-    public AuthenticationResponse(long id, String username, String email, String fullName, String phone, String token) {
+    public AuthenticationResponse(long id, String username, String email, String fullName, String phone, String token, ERole role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.fullName = fullName;
         this.phone = phone;
         this.token = token;
+        this.role = role;
+    }
+
+    public ERole getRole() {
+        return role;
+    }
+
+    public void setRole(ERole role) {
+        this.role = role;
     }
 
     public long getId() {

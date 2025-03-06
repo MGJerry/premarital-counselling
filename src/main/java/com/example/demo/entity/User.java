@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.model.ERole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,17 +21,27 @@ public class User implements UserDetails {
     public String password;
     public String fullName;
     public String phone;
+    public ERole role;
 
     public User() {
     }
 
-    public User(int id, String username, String email, String password, String fullName, String phone) {
+    public User(long id, String username, String email, String password, String fullName, String phone, ERole role) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.phone = phone;
+        this.role = role;
+    }
+
+    public ERole getRole() {
+        return role;
+    }
+
+    public void setRole(ERole role) {
+        this.role = role;
     }
 
     public long getId() {

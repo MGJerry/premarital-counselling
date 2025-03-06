@@ -35,6 +35,7 @@ public class AuthenticationService implements UserDetailsService {
         user.setFullName(userRequest.getFullName());
         user.setPhone(userRequest.getPhone());
         user.setEmail(userRequest.getEmail());
+        user.setRole(userRequest.getRole());
 
         User newAccount = authenticationRepository.save(user);
         return newAccount;
@@ -63,8 +64,9 @@ public class AuthenticationService implements UserDetailsService {
         authenticationResponse.setId(user.getId());
         authenticationResponse.setFullName(user.getFullName());
         authenticationResponse.setUsername(user.getUsername());
+        authenticationResponse.setPhone(user.getPhone());
+        authenticationResponse.setRole(user.getRole());
         authenticationResponse.setToken(token);
-
         return authenticationResponse;
     }
 

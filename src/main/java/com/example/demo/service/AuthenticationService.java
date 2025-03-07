@@ -5,6 +5,7 @@ import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UserRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
 import com.example.demo.repository.AuthenticationRepository;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,8 @@ public class AuthenticationService implements UserDetailsService {
     AuthenticationManager authenticationManager;
     @Autowired
     TokenService tokenService;
+    @Autowired
+    private UserRepository userRepository;
 
     public User register(UserRequest userRequest){
 
@@ -47,9 +50,10 @@ public class AuthenticationService implements UserDetailsService {
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
         try {
+            User tempUser = userRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getEmail(),
+                            tempUser.getUsername(),
                             authenticationRequest.getPassword()
                     )
             );

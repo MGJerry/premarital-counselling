@@ -56,7 +56,7 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             throw new NullPointerException("Wrong email or password");
         }
-        User user = authenticationRepository.findByUsername(authenticationRequest.getEmail()).orElseThrow();
+        User user = authenticationRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
         String token = tokenService.generateToken(user);
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();

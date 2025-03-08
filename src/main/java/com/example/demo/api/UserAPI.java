@@ -2,7 +2,7 @@ package com.example.demo.api;
 
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
-import com.example.demo.entity.request.UserRequest;
+import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
 import com.example.demo.service.AuthenticationService;
 import jakarta.validation.Valid;
@@ -17,7 +17,7 @@ public class UserAPI {
     AuthenticationService authenticationService;
     //register
     @PostMapping("register")
-    public ResponseEntity register(@Valid @RequestBody UserRequest user){
+    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest user){
         User newUser = authenticationService.register(user);
         return ResponseEntity.ok(newUser);
     }
@@ -29,4 +29,5 @@ public class UserAPI {
         return ResponseEntity.ok(authenticationResponse);
     }
 
+    
 }

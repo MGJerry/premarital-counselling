@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,20 +21,25 @@ public class User implements UserDetails {
     public String email;
     public String password;
     public String fullName;
+    public String gender;
+    public String country;
     public String phone;
     public ERole role;
-
+    public EStatus eStatus;
     public User() {
     }
 
-    public User(long id, String username, String email, String password, String fullName, String phone, ERole role) {
+    public User(long id, String username, String email, String password, String fullName, String gender, String country, String phone, ERole role, EStatus eStatus) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
+        this.gender = gender;
+        this.country = country;
         this.phone = phone;
         this.role = role;
+        this.eStatus = eStatus;
     }
 
     public ERole getRole() {
@@ -115,5 +121,29 @@ public class User implements UserDetails {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public EStatus geteStatus() {
+        return eStatus;
+    }
+
+    public void seteStatus(EStatus eStatus) {
+        this.eStatus = eStatus;
     }
 }

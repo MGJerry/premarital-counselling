@@ -2,22 +2,18 @@ package com.example.demo.entity.request;
 
 import com.example.demo.model.ERole;
 
-public class UserRequest {
-    public String username;
-    public String password;
+public class UserRegisterRequest {
     public String fullName;
-    public String phone;
+    public String password;
     public String email;
     public ERole role;
 
-    public UserRequest() {
+    public UserRegisterRequest() {
     }
 
-    public UserRequest(String username, String password, String fullName, String phone, String email, ERole role) {
-        this.username = username;
-        this.password = password;
+    public UserRegisterRequest(String fullName, String password, String email, ERole role) {
         this.fullName = fullName;
-        this.phone = phone;
+        this.password = password;
         this.email = email;
         this.role = role;
     }
@@ -28,14 +24,6 @@ public class UserRequest {
 
     public void setRole(ERole role) {
         this.role = role;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
@@ -52,14 +40,6 @@ public class UserRequest {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public String getEmail() {

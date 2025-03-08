@@ -2,8 +2,10 @@ package com.example.demo.service;
 
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
-import com.example.demo.entity.request.UserRequest;
+import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
+import com.example.demo.enums.EStatus;
+import com.example.demo.model.ERole;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,22 +30,20 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private UserRepository userRepository;
 
-    public User register(UserRequest userRequest){
+    public User register(UserRegisterRequest userRegisterRequest){
 
 
         User user = new User();
 
-        user.setUsername(userRequest.getUsername());
-        user.setPassword(passwordEncoder.encode(userRequest.getPassword()));
-        user.setFullName(userRequest.getFullName());
-        user.setPhone(userRequest.getPhone());
-        user.setEmail(userRequest.getEmail());
-        user.setRole(userRequest.getRole());
+        user.setFullName(userRegisterRequest.getFullName());
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setRole(ERole.ROLE_USER);
+        user.seteStatus(EStatus.APPROVED);
 
         User newAccount = authenticationRepository.save(user);
         return newAccount;
     }
-
 
 
 

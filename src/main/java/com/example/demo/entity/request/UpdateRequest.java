@@ -1,10 +1,15 @@
 package com.example.demo.entity.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Pattern;
+
 import java.util.Date;
 
 public class UpdateRequest {
     public String fullName;
+    @Email(message = "Email is not invalid")
     public String email;
+    @Pattern(regexp = "/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b/")
     public String phone;
     public Date birthday;
     public boolean Gender;

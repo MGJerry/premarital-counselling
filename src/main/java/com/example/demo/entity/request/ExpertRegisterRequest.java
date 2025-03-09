@@ -1,11 +1,23 @@
 package com.example.demo.entity.request;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+
 public class ExpertRegisterRequest {
+    @NotBlank(message = "FullName is required")
     public String fullName;
+    @NotBlank(message = "username is required")
     public String userName;
+    @NotBlank(message = "phone number is required")
+    @Pattern(regexp = "/(03|05|07|08|09|01[2|6|8|9])+([0-9]{8})\\b/")
     public String phone;
+    @NotBlank(message = "profile picture is required")
     public String imgurl;
+    @NotBlank(message = "email is required")
+    @Email
     public String email;
+    @NotBlank(message = "password is required")
     public String password;
 
     public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, String email, String password) {

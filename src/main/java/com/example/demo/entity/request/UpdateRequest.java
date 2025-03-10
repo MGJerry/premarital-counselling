@@ -1,9 +1,10 @@
 package com.example.demo.entity.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UpdateRequest {
     public String fullName;
@@ -11,7 +12,8 @@ public class UpdateRequest {
     public String email;
     @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
-    public Date birthday;
+    @JsonFormat(pattern = "MM/dd/yyyy")
+    public LocalDate birthday;
     public boolean Gender;
     public String imgurl;
     public String address;
@@ -20,7 +22,7 @@ public class UpdateRequest {
     public UpdateRequest() {
     }
 
-    public UpdateRequest(String fullName, String email, String phone, Date birthday, boolean gender, String imgurl, String address, String bio) {
+    public UpdateRequest(String fullName, String email, String phone, LocalDate birthday, boolean gender, String imgurl, String address, String bio) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -55,14 +57,6 @@ public class UpdateRequest {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
-
     public boolean isGender() {
         return Gender;
     }
@@ -93,5 +87,13 @@ public class UpdateRequest {
 
     public void setBio(String bio) {
         this.bio = bio;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 }

@@ -23,10 +23,17 @@ public class TokenService {
     }
 
     public String generateToken(User user){
+//        String token = Jwts.builder()
+//                .subject(user.getId()+"")
+//                .issuedAt(new Date(System.currentTimeMillis()))
+//                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+//                .signWith(getSigninKey())
+//                .compact();
         String token = Jwts.builder()
-                .subject(user.getId()+"")
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setSubject(user.getId()+"")
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .claim("scope", user.getRole().toString())
                 .signWith(getSigninKey())
                 .compact();
         return token;

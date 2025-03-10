@@ -40,7 +40,9 @@ public class Filter extends OncePerRequestFilter {
             "/swagger-resources/**",
             "/api/login",
             "/api/register",
-            "/api/expertregister"
+            "/api/expertregister",
+            "/api/update/{id}",
+            "/api/{id}"
 //            "/api/product/**"  để kiểu này tức mọi method CRUD đều dc public (ai xài cũng dc)
     );
 
@@ -71,6 +73,7 @@ public class Filter extends OncePerRequestFilter {
             }
 
             User user = null;
+
             try {
                 user = tokenService.getAccountByToken(token);
             } catch (MalformedJwtException malformedJwtException) {

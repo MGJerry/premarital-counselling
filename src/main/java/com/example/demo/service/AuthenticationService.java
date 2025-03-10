@@ -5,7 +5,6 @@ import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
-import com.example.demo.entity.response.UpdateResponse;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.AuthenticationRepository;
@@ -18,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
@@ -84,17 +84,15 @@ public class AuthenticationService implements UserDetailsService {
 
 
     //update
-    public UpdateResponse updateProfile(UpdateRequest updateRequest) {
-        UpdateResponse updateResponse = new UpdateResponse();
-        updateResponse.setFullName(updateRequest.getFullName());
-        updateResponse.setEmail(updateRequest.getEmail());
-        updateResponse.setPhone(updateRequest.getPhone());
-        updateResponse.setBirthday(updateRequest.getBirthday());
-        updateResponse.setGender(updateRequest.isGender());
-        updateResponse.setImgurl(updateRequest.getImgurl());
-        updateResponse.setAddress(updateRequest.getAddress());
-        updateResponse.setBio(updateRequest.getBio());
+    public User updateProfile(UpdateRequest updateRequest, long id) {
+        User user = authenticationRepository.findById(id);
 
-        return updateResponse;
+        user.setFullName(updateRequest.getFullName());
+        user.setEmail(updateRequest.getEmail());
+        user.setPhone(updateRequest.getPhone());
+        user.setBirthday(updateRequest.getBirthday());
+        user.setGender(updateRequest.isGender());
+
+        return authenticationRepository.save(user);
     }
 }

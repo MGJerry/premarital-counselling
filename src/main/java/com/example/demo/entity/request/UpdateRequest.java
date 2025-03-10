@@ -9,7 +9,7 @@ public class UpdateRequest {
     public String fullName;
     @Email(message = "Email is not invalid")
     public String email;
-    @Pattern(regexp = "/(0[3|5|7|8|9])+([0-9]{8})\\b/g")
+    @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
     public Date birthday;
     public boolean Gender;

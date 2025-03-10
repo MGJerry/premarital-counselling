@@ -1,12 +1,12 @@
 package com.example.demo.entity.response;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UpdateResponse {
     public String fullName;
     public String email;
     public String phone;
-    public Date birthday;
+    public LocalDate birthday;
     public boolean Gender;
     public String imgurl;
     public String address;
@@ -15,7 +15,7 @@ public class UpdateResponse {
     public UpdateResponse() {
     }
 
-    public UpdateResponse(String fullName, String email, String phone, Date birthday, boolean gender, String imgurl, String address, String bio) {
+    public UpdateResponse(String fullName, String email, String phone, LocalDate birthday, boolean gender, String imgurl, String address, String bio) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
@@ -50,11 +50,11 @@ public class UpdateResponse {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
+    public LocalDate getBirthday() {
         return birthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
     }
 

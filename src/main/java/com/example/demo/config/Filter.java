@@ -39,7 +39,8 @@ public class Filter extends OncePerRequestFilter {
             "/v3/api-docs/**",
             "/swagger-resources/**",
             "/api/login",
-            "/api/register"
+            "/api/register",
+            "/api/expertregister"
 //            "/api/product/**"  để kiểu này tức mọi method CRUD đều dc public (ai xài cũng dc)
     );
 

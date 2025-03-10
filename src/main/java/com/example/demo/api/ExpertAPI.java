@@ -14,7 +14,7 @@ public class ExpertAPI {
     @Autowired
     ExpertService expertService;
     //register for Expert
-    @PostMapping("register")
+    @PostMapping("expertregister")
     public ResponseEntity register(@Valid @RequestBody ExpertRegisterRequest expertRegisterRequest){
         Expert newexpert = expertService.register(expertRegisterRequest);
         return ResponseEntity.ok(newexpert);

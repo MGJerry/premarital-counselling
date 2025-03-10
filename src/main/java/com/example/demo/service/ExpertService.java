@@ -6,6 +6,7 @@ import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.ExpertRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ public class ExpertService {
     @Autowired
     ExpertRepository expertRepository;
     @Autowired
+    @Lazy
     PasswordEncoder passwordEncoder;
     public Expert register(ExpertRegisterRequest expertRegisterRequest){
         Expert expert = new Expert();

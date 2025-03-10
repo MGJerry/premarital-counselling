@@ -16,30 +16,30 @@ import java.util.List;
 public class AssessmentController {
 
     @Autowired
-    private AssessmentService questionService;
+    private AssessmentService assessmentService;
 
     @GetMapping
     public ResponseEntity<List<Assessment>> getAllCategories() {
-        return questionService.getAllAssessments();
+        return assessmentService.getAllAssessments();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Assessment> getById(@PathVariable Long id) {
-        return questionService.getAssessmentById(id);
+        return assessmentService.getAssessmentById(id);
     }
 
     @PostMapping
-    public ResponseEntity<String> create(@RequestBody AssessmentRequest category) {
-        return questionService.createAssessment(category);
+    public ResponseEntity<String> create(@RequestBody AssessmentRequest request) {
+        return assessmentService.createAssessment(request);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Assessment> update(@PathVariable Long id, @RequestBody AssessmentRequest request) {
-        return questionService.updateAssessment(id, request);
+        return assessmentService.updateAssessment(id, request);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-        return questionService.deleteAssessment(id);
+        return assessmentService.deleteAssessment(id);
     }
 }

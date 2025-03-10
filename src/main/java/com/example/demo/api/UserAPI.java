@@ -5,7 +5,6 @@ import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
-import com.example.demo.entity.response.UpdateResponse;
 import com.example.demo.service.AuthenticationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,10 +30,10 @@ public class UserAPI {
         return ResponseEntity.ok(authenticationResponse);
     }
 
-    @PutMapping("update")
-    public ResponseEntity update(@RequestBody UpdateRequest updateRequest){
-        UpdateResponse updateResponse = authenticationService.updateProfile(updateRequest);
-        return ResponseEntity.ok(updateResponse);
+    @PutMapping("update/{id}")
+    public ResponseEntity<User> update(@RequestBody UpdateRequest updateRequest, @PathVariable long id){
+        User user = authenticationService.updateProfile(updateRequest, id);
+        return ResponseEntity.ok(user);
     }
     
 }

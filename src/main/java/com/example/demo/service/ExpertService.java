@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExpertService {
@@ -33,4 +34,8 @@ public class ExpertService {
         Expert newExpert = expertRepository.save(expert);
         return newExpert;
     }
+    public Optional<Expert> getExpertById(long id){
+        return expertRepository.findById(id);
+    }
+
 }

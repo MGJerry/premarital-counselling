@@ -4,13 +4,15 @@ import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import jakarta.persistence.Entity;
 
+import java.time.LocalDate;
+
 @Entity
 public class Expert extends User{
     public String imgurl;
     public String language;
 
-    public Expert(long id, String username, String email, String password, String fullName, String gender, String country, String phone, ERole role, EStatus eStatus, String imgurl, String language) {
-        super(id, username, email, password, fullName, gender, country, phone, role, eStatus);
+    public Expert(long id, String username, String email, String password, String fullName, boolean gender, String country, String phone, LocalDate birthday, ERole role, EStatus eStatus, String imgurl, String language) {
+        super(id, username, email, password, fullName, gender, country, phone, birthday, role, eStatus);
         this.imgurl = imgurl;
         this.language = language;
     }

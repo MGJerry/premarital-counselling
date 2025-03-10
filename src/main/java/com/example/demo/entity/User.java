@@ -9,6 +9,7 @@ import jakarta.persistence.Id;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,15 +22,16 @@ public class User implements UserDetails {
     public String email;
     public String password;
     public String fullName;
-    public String gender;
+    public boolean gender;
     public String country;
     public String phone;
+    public LocalDate birthday;
     public ERole role;
     public EStatus eStatus;
     public User() {
     }
 
-    public User(long id, String username, String email, String password, String fullName, String gender, String country, String phone, ERole role, EStatus eStatus) {
+    public User(long id, String username, String email, String password, String fullName, boolean gender, String country, String phone, LocalDate birthday, ERole role, EStatus eStatus) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -38,6 +40,7 @@ public class User implements UserDetails {
         this.gender = gender;
         this.country = country;
         this.phone = phone;
+        this.birthday = birthday;
         this.role = role;
         this.eStatus = eStatus;
     }
@@ -123,11 +126,11 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public String getGender() {
+    public boolean getGender() {
         return gender;
     }
 
-    public void setGender(String gender) {
+    public void setGender(boolean gender) {
         this.gender = gender;
     }
 
@@ -145,5 +148,13 @@ public class User implements UserDetails {
 
     public void seteStatus(EStatus eStatus) {
         this.eStatus = eStatus;
+    }
+
+    public LocalDate getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
     }
 }

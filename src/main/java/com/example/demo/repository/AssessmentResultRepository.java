@@ -15,5 +15,6 @@ public interface AssessmentResultRepository extends JpaRepository<AssessmentResu
     Optional<AssessmentResult> findByResultId (Long id);
     Boolean existsByResultId (Long id);
     Optional<AssessmentResult> findByAssessmentAndMember (Assessment assessment, Member member);
+    Optional<AssessmentResult> findByMember (Member member);
     List<AssessmentResult> findByCategory(AssessmentCategory category);
 }

@@ -10,7 +10,7 @@ public class ExpertRegisterRequest {
     @NotBlank(message = "username is required")
     public String userName;
     @NotBlank(message = "phone number is required")
-    @Pattern(regexp = "((03|05|07|08|09|01[2689])[0-9]{7}\\b)")
+    @Pattern(regexp = "/(0[3|5|7|8|9])+([0-9]{8})\\b/g")
     public String phone;
     @NotBlank(message = "profile picture is required")
     public String imgurl;

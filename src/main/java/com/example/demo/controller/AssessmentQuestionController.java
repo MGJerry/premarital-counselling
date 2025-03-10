@@ -29,8 +29,8 @@ public class AssessmentQuestionController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createQuestion(@RequestBody AssessmentQuestionRequest category) {
-        return questionService.createQuestion(category);
+    public ResponseEntity<String> createQuestion(@RequestBody AssessmentQuestionRequest request) {
+        return questionService.createQuestion(request);
     }
 
     @PutMapping("/{id}")

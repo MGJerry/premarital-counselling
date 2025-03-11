@@ -2,8 +2,6 @@ package com.example.demo.service;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.AuthenticationRepository;
-import com.example.demo.repository.UserRepository;
-import com.example.demo.util.AuthenUtil;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
@@ -19,8 +17,6 @@ public class TokenService {
     @Autowired
     AuthenticationRepository authenticationRepository;
     private final String SECRET_KEY = "HT4bb6d1dfbafb64a681139d1586b6f1160d18159afd57c8c79136d7490630407c";
-    @Autowired
-    private UserRepository userRepository;
 
     private SecretKey getSigninKey(){
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
@@ -56,10 +52,6 @@ public class TokenService {
         User user = authenticationRepository.findById(id);
 
         return user;
-    }
-
-    public User getCurrentUser() {
-        return userRepository.findById(AuthenUtil.getAuthenticatedUser().getId()).orElseThrow();
     }
 
 }

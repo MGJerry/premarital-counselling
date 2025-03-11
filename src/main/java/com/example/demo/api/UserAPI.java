@@ -6,8 +6,12 @@ import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
 import com.example.demo.service.AuthenticationService;
+import com.example.demo.service.TokenService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +20,11 @@ import org.springframework.web.bind.annotation.*;
 public class UserAPI {
     @Autowired
     AuthenticationService authenticationService;
+
+    @Lazy
+    @Autowired
+    TokenService tokenService;
+
     //register
     @PostMapping("register")
     public ResponseEntity register(@Valid @RequestBody UserRegisterRequest user){
@@ -35,5 +44,10 @@ public class UserAPI {
         User user = authenticationService.updateProfile(updateRequest, id);
         return ResponseEntity.ok(user);
     }
-    
+
+    @GetMapping("getCurrentUser")
+    @SecurityRequirement(name = "api")
+    public ResponseEntity<User> getUserDetails() {
+        return new ResponseEntity<>(tokenService.getCurrentUser(), HttpStatus.OK );
+    }
 }

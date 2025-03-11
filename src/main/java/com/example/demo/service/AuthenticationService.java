@@ -9,6 +9,7 @@ import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.util.AuthenUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -94,5 +95,10 @@ public class AuthenticationService implements UserDetailsService {
         user.setGender(updateRequest.isGender());
 
         return authenticationRepository.save(user);
+    }
+
+    public User getCurrentUser() {
+        System.out.println(AuthenUtil.getAuthenticatedUser());
+        return AuthenUtil.getAuthenticatedUser();
     }
 }

@@ -43,7 +43,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/register",
             "/api/expertregister",
             "/api/update/{id}",
-            "/api/{id}"
+            "/api/{id}",
+            "/api/resetPassword",
+            "/api/resetPassword/**"
 //            "/api/product/**"  để kiểu này tức mọi method CRUD đều dc public (ai xài cũng dc)
     );
 

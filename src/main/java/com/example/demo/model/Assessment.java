@@ -19,7 +19,7 @@ public class Assessment {
         this.assessmentId = assessmentId;
     }
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "Assessment_Question_Mapping",  // Change table name to avoid conflicts
             joinColumns = @JoinColumn(name = "assessment_id"),

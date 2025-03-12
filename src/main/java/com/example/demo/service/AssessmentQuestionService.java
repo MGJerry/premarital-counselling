@@ -1,10 +1,12 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Assessment;
 import com.example.demo.model.AssessmentCategory;
 import com.example.demo.model.AssessmentQuestion;
 import com.example.demo.payload.request.AssessmentQuestionRequest;
 import com.example.demo.repository.AssessmentCategoryRepository;
 import com.example.demo.repository.AssessmentQuestionRepository;
+import com.example.demo.repository.AssessmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,8 @@ public class AssessmentQuestionService {
     AssessmentCategoryRepository categoryRepository;
     @Autowired
     AssessmentQuestionRepository questionRepository;
+    @Autowired
+    AssessmentRepository assessmentRepository;
     public ResponseEntity<List<AssessmentQuestion>> getAllQuestions() {
         try {
             return new ResponseEntity<>(questionRepository.findAll(), HttpStatus.OK);
@@ -99,10 +103,28 @@ public class AssessmentQuestionService {
     }
 
     public ResponseEntity<String> deleteQuestion(Long id) {
-        if (questionRepository.existsByQuestionId(id)) {
-            questionRepository.deleteById(id);
-            return new ResponseEntity<>("Success", HttpStatus.OK);
+        Optional<AssessmentQuestion> questionOpt = questionRepository.findById(id);
+
+        if (questionOpt.isEmpty()) {
+            return new ResponseEntity<>("Question not found", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("Question not found", BAD_REQUEST);
+
+        AssessmentQuestion question = questionOpt.get();
+
+        // Find all assessments containing this question
+        List<Assessment> assessments = assessmentRepository.findAll();
+
+        for (Assessment assessment : assessments) {
+            if (assessment.getQuestions().contains(question)) {
+                assessment.getQuestions().remove(question);
+                assessmentRepository.save(assessment); // Update assessment to reflect the removal
+            }
+        }
+
+        // Now safely delete the question
+        questionRepository.delete(question);
+
+        return new ResponseEntity<>("Success", HttpStatus.OK);
     }
+
 }

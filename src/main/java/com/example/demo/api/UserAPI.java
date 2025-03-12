@@ -44,4 +44,14 @@ public class UserAPI {
     public ResponseEntity<User> getUserDetails() {
         return new ResponseEntity<>(authenticationService.getCurrentUser(), HttpStatus.OK );
     }
+
+    @PostMapping("resetPassword")
+    public ResponseEntity<String> requestPasswordReset(@RequestBody String email) {
+        return authenticationService.createPasswordResetTokenForUser(email);
+    }
+
+    @PutMapping("resetPassword/{token}")
+    public ResponseEntity<String> requestPasswordReset(@RequestBody String password, @PathVariable String token) {
+        return authenticationService.resetPassword(token, password);
+    }
 }

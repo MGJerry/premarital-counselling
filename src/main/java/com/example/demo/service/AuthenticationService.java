@@ -44,9 +44,7 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private EmailService emailService;
 
-    public User register(UserRegisterRequest userRegisterRequest){
-
-
+    public User register(UserRegisterRequest userRegisterRequest) {
         User user = new User();
 
         user.setFullName(userRegisterRequest.getFullName());
@@ -56,10 +54,8 @@ public class AuthenticationService implements UserDetailsService {
         user.setRole(ERole.ROLE_USER);
         user.seteStatus(EStatus.APPROVED);
 
-        User newAccount = authenticationRepository.save(user);
-        return newAccount;
+        return authenticationRepository.save(user);
     }
-
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
         try {
@@ -73,7 +69,8 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             throw new NullPointerException("Wrong email or password");
         }
-        User user = authenticationRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
+        User user = authenticationRepository.findByEmail(authenticationRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         String token = tokenService.generateToken(user);
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
@@ -89,13 +86,13 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) authenticationRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Account not found"));
+        return (UserDetails) authenticationRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
     }
 
-
-    //update
     public User updateProfile(UpdateRequest updateRequest, long id) {
-        User user = authenticationRepository.findById(id);
+        User user = authenticationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setFullName(updateRequest.getFullName());
         user.setEmail(updateRequest.getEmail());
@@ -115,7 +112,8 @@ public class AuthenticationService implements UserDetailsService {
         if (!userRepository.existsByEmail(email)) {
             return new ResponseEntity<>("The user with this email doesn't exist", HttpStatus.BAD_REQUEST);
         }
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken myToken = new PasswordResetToken(token, user);
@@ -131,7 +129,8 @@ public class AuthenticationService implements UserDetailsService {
             return new ResponseEntity<>("This token doesn't exist", HttpStatus.BAD_REQUEST);
         }
 
-        PasswordResetToken resetToken = passwordTokenRepository.findByToken(token).get();
+        PasswordResetToken resetToken = passwordTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
         if (isPasswordResetTokenExpired(resetToken)) {
             return new ResponseEntity<>("This token is expired.", HttpStatus.BAD_REQUEST);
         }

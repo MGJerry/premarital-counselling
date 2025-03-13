@@ -59,4 +59,9 @@ public class UserAPI {
         authenticationService.deleteUserById(id);
         return ResponseEntity.ok("Delete Successfully");
     }
+    @PostMapping("/AdminAccount")
+    public ResponseEntity createAdminAccount(@RequestBody UserRegisterRequest userRegisterRequest) {
+        User newAdmin = authenticationService.createAdmin(userRegisterRequest);
+        return ResponseEntity.ok(newAdmin);
+    }
 }

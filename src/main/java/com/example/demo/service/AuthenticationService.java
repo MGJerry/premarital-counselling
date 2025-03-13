@@ -161,4 +161,13 @@ public class AuthenticationService implements UserDetailsService {
     public void deleteUserById(long id) {
         userRepository.deleteById(id);
     }
+    public User createAdmin(UserRegisterRequest userRegisterRequest) {
+        User user = new User();
+        user.setFullName(userRegisterRequest.getFullName());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setRole(ERole.ROLE_ADMIN);
+
+        return userRepository.save(user);
+    }
 }

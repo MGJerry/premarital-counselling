@@ -99,6 +99,9 @@ public class AuthenticationService implements UserDetailsService {
         user.setPhone(updateRequest.getPhone());
         user.setBirthday(updateRequest.getBirthday());
         user.setGender(updateRequest.getGender());
+        user.setImgurl(updateRequest.getImgurl());
+        user.setAddress(updateRequest.getAddress());
+        user.setBio(updateRequest.getBio());
 
         return authenticationRepository.save(user);
     }

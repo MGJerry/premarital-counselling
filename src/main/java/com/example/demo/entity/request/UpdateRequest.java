@@ -13,7 +13,7 @@ public class UpdateRequest {
     public String email;
     @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
-    @JsonFormat(pattern = "MM/dd/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate birthday;
     public EGender gender;
     public String imgurl;

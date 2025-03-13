@@ -1,7 +1,9 @@
 package com.example.demo.api;
 
 import com.example.demo.entity.Expert;
+import com.example.demo.entity.User;
 import com.example.demo.entity.request.ExpertRegisterRequest;
+import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.repository.ExpertRepository;
 import com.example.demo.service.ExpertService;
 import jakarta.validation.Valid;
@@ -32,5 +34,10 @@ public class ExpertAPI {
     public ResponseEntity<List<Expert>> getAllExpert(){
         List<Expert> experts = expertService.getAllExperts();
         return ResponseEntity.ok(experts);
+    }
+    @PutMapping ("/approveExpert/{id}")
+    public ResponseEntity<Expert> approve(@PathVariable long id){
+        Expert expert = expertService.approveExpert( id);
+        return ResponseEntity.ok(expert);
     }
 }

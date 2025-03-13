@@ -48,8 +48,9 @@ public class Filter extends OncePerRequestFilter {
             "/api/AdminAccount",
             "/api/deleteById/{id}",
             "/api/resetPassword",
-            "/api//getAllUsers",
-            "/api//getUserById/{id}",
+            "/api/getAllUsers",
+            "/api/getUserById/{id}",
+            "/api/approveExpert/{id}",
             "/api/resetPassword/**"
     );
 

@@ -23,7 +23,7 @@ public class ExpertAPI {
         Expert newexpert = expertService.register(expertRegisterRequest);
         return ResponseEntity.ok(newexpert);
     }
-    @GetMapping("/{id}")
+    @GetMapping("/getExpertById/{id}")
     public ResponseEntity<Optional<Expert>> getExpert(@PathVariable long id){
         Optional<Expert> expert = expertService.getExpertById(id);
         return ResponseEntity.ok(expert);

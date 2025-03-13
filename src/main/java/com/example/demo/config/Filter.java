@@ -43,10 +43,10 @@ public class Filter extends OncePerRequestFilter {
             "/api/register",
             "/api/expertregister",
             "/api/update/{id}",
-            "/api/{id}",
+            "/api/getExpertById/{id}",
+            "/api/getAllExpert",
             "/api/resetPassword",
             "/api/resetPassword/**"
-//            "/api/product/**"  để kiểu này tức mọi method CRUD đều dc public (ai xài cũng dc)
     );
 
     //nhận bt api nào là api cần phân quyền

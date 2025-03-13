@@ -158,7 +158,7 @@ public class AuthenticationService implements UserDetailsService {
         return isExpired;
     }
 
-    public void deleteUserById(long id) {
+    public void deleteUserById(Long id) {
         userRepository.deleteById(id);
     }
     public User createAdmin(UserRegisterRequest userRegisterRequest) {
@@ -168,6 +168,6 @@ public class AuthenticationService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
         user.setRole(ERole.ROLE_ADMIN);
 
-        return userRepository.save(user);
+        return authenticationRepository.save(user);
     }
 }

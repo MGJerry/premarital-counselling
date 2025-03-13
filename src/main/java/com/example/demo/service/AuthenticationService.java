@@ -98,7 +98,7 @@ public class AuthenticationService implements UserDetailsService {
         user.setEmail(updateRequest.getEmail());
         user.setPhone(updateRequest.getPhone());
         user.setBirthday(updateRequest.getBirthday());
-        user.setGender(updateRequest.isGender());
+        user.setGender(updateRequest.getGender());
 
         return authenticationRepository.save(user);
     }

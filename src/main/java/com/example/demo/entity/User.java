@@ -29,6 +29,7 @@ public class User implements UserDetails {
     public String phone;
     public LocalDate birthday;
     public String imgurl;
+    @Enumerated(EnumType.STRING)
     public ERole role;
     public EStatus eStatus;
     public String Bio;

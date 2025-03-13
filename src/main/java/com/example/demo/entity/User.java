@@ -17,6 +17,7 @@ import java.util.List;
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
     public String username;
     public String email;

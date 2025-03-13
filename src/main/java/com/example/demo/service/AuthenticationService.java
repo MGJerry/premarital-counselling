@@ -154,4 +154,8 @@ public class AuthenticationService implements UserDetailsService {
 
         return isExpired;
     }
+
+    public void deleteUserById(long id) {
+        userRepository.deleteById(id);
+    }
 }

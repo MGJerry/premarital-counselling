@@ -54,4 +54,9 @@ public class UserAPI {
     public ResponseEntity<String> requestPasswordReset(@RequestBody String password, @PathVariable String token) {
         return authenticationService.resetPassword(token, password);
     }
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
+        authenticationService.deleteUserById(id);
+        return ResponseEntity.ok("Delete Successfully");
+    }
 }

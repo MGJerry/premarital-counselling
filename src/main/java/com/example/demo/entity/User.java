@@ -1,12 +1,9 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.EGender;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -16,15 +13,16 @@ import java.util.List;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public long id;
     public String username;
     public String email;
     public String password;
     public String fullName;
-    public boolean gender;
+    public EGender gender;
     public String country;
     public String phone;
     public LocalDate birthday;
@@ -33,7 +31,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(long id, String username, String email, String password, String fullName, boolean gender, String country, String phone, LocalDate birthday, ERole role, EStatus eStatus) {
+    public User(long id, String username, String email, String password, String fullName, EGender gender, String country, String phone, LocalDate birthday, ERole role, EStatus eStatus) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -128,11 +126,11 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public boolean getGender() {
+    public EGender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(EGender gender) {
         this.gender = gender;
     }
 

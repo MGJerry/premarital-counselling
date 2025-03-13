@@ -2,12 +2,14 @@ package com.example.demo.api;
 
 import com.example.demo.entity.Expert;
 import com.example.demo.entity.request.ExpertRegisterRequest;
+import com.example.demo.repository.ExpertRepository;
 import com.example.demo.service.ExpertService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -26,5 +28,9 @@ public class ExpertAPI {
         Optional<Expert> expert = expertService.getExpertById(id);
         return ResponseEntity.ok(expert);
     }
-
+    @GetMapping("/getAllExpert")
+    public ResponseEntity<List<Expert>> getAllExpert(){
+        List<Expert> experts = expertService.getAllExperts();
+        return ResponseEntity.ok(experts);
+    }
 }

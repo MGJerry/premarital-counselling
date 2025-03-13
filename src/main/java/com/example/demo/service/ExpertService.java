@@ -37,5 +37,7 @@ public class ExpertService {
     public Optional<Expert> getExpertById(long id){
         return expertRepository.findById(id);
     }
-
+    public List<Expert> getAllExperts(){
+        return expertRepository.findAll();
+    }
 }

@@ -45,6 +45,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/update/{id}",
             "/api/getExpertById/{id}",
             "/api/getAllExpert",
+            "/api/AdminAccount",
             "/api/resetPassword",
             "/api/resetPassword/**"
     );

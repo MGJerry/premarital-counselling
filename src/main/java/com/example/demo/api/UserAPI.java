@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -66,5 +67,15 @@ public class UserAPI {
     public ResponseEntity createAdminAccount(@RequestBody UserRegisterRequest userRegisterRequest) {
         User newAdmin = authenticationService.createAdmin(userRegisterRequest);
         return ResponseEntity.ok(newAdmin);
+    }
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = authenticationService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<Optional<User>> getUser(@PathVariable long id){
+        Optional<User> user = authenticationService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 }

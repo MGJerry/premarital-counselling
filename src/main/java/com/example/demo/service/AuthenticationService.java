@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -169,5 +172,13 @@ public class AuthenticationService implements UserDetailsService {
         user.setRole(ERole.ROLE_ADMIN);
 
         return authenticationRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(long id){
+        return userRepository.findById(id);
     }
 }

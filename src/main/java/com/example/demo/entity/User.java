@@ -1,11 +1,9 @@
 package com.example.demo.entity;
 
+import com.example.demo.enums.EGender;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,6 +12,9 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,16 +23,20 @@ public class User implements UserDetails {
     public String email;
     public String password;
     public String fullName;
-    public boolean gender;
+    public EGender gender;
     public String country;
+    public String address;
     public String phone;
     public LocalDate birthday;
+    public String imgurl;
+    @Enumerated(EnumType.STRING)
     public ERole role;
     public EStatus eStatus;
+    public String Bio;
     public User() {
     }
 
-    public User(long id, String username, String email, String password, String fullName, boolean gender, String country, String phone, LocalDate birthday, ERole role, EStatus eStatus) {
+    public User(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -39,10 +44,13 @@ public class User implements UserDetails {
         this.fullName = fullName;
         this.gender = gender;
         this.country = country;
+        this.address = address;
         this.phone = phone;
         this.birthday = birthday;
+        this.imgurl = imgurl;
         this.role = role;
         this.eStatus = eStatus;
+        Bio = bio;
     }
 
     public ERole getRole() {
@@ -126,11 +134,11 @@ public class User implements UserDetails {
         this.phone = phone;
     }
 
-    public boolean getGender() {
+    public EGender getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(EGender gender) {
         this.gender = gender;
     }
 
@@ -156,5 +164,29 @@ public class User implements UserDetails {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
+    }
+
+    public String getImgurl() {
+        return imgurl;
+    }
+
+    public void setImgurl(String imgurl) {
+        this.imgurl = imgurl;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getBio() {
+        return Bio;
+    }
+
+    public void setBio(String bio) {
+        Bio = bio;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.demo.api;
 
+import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
@@ -12,6 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
@@ -53,5 +57,25 @@ public class UserAPI {
     @PutMapping("resetPassword/{token}")
     public ResponseEntity<String> requestPasswordReset(@RequestBody String password, @PathVariable String token) {
         return authenticationService.resetPassword(token, password);
+    }
+    @DeleteMapping("/deleteById/{id}")
+    public ResponseEntity<String> deleteById(@PathVariable long id) {
+        authenticationService.deleteUserById(id);
+        return ResponseEntity.ok("Delete Successfully");
+    }
+    @PostMapping("/AdminAccount")
+    public ResponseEntity createAdminAccount(@RequestBody UserRegisterRequest userRegisterRequest) {
+        User newAdmin = authenticationService.createAdmin(userRegisterRequest);
+        return ResponseEntity.ok(newAdmin);
+    }
+    @GetMapping("/getAllUsers")
+    public ResponseEntity<List<User>> getAllUsers(){
+        List<User> users = authenticationService.getAllUsers();
+        return ResponseEntity.ok(users);
+    }
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<Optional<User>> getUser(@PathVariable long id){
+        Optional<User> user = authenticationService.getUserById(id);
+        return ResponseEntity.ok(user);
     }
 }

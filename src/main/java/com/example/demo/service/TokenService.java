@@ -49,9 +49,8 @@ public class TokenService {
         String idString = claims.getSubject();
         long id = Long.parseLong(idString);
 
-        User user = authenticationRepository.findById(id);
-
-        return user;
+        return authenticationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
 }

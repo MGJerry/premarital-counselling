@@ -38,4 +38,14 @@ public class ExpertService {
         return expertRepository.findById(id);
     }
 
+    public List<Expert> getAllExperts(){
+        return expertRepository.findAll();
+    }
+
+    public Expert approveExpert(long id){
+        Expert approvedExpert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));;
+        approvedExpert.seteStatus(EStatus.APPROVED);
+        return expertRepository.save(approvedExpert);
+    }
 }

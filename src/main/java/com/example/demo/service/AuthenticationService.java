@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -44,9 +47,7 @@ public class AuthenticationService implements UserDetailsService {
     @Autowired
     private EmailService emailService;
 
-    public User register(UserRegisterRequest userRegisterRequest){
-
-
+    public User register(UserRegisterRequest userRegisterRequest) {
         User user = new User();
 
         user.setFullName(userRegisterRequest.getFullName());
@@ -56,10 +57,8 @@ public class AuthenticationService implements UserDetailsService {
         user.setRole(ERole.ROLE_USER);
         user.seteStatus(EStatus.APPROVED);
 
-        User newAccount = authenticationRepository.save(user);
-        return newAccount;
+        return authenticationRepository.save(user);
     }
-
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {
         try {
@@ -73,7 +72,8 @@ public class AuthenticationService implements UserDetailsService {
         } catch (Exception e) {
             throw new NullPointerException("Wrong email or password");
         }
-        User user = authenticationRepository.findByEmail(authenticationRequest.getEmail()).orElseThrow();
+        User user = authenticationRepository.findByEmail(authenticationRequest.getEmail())
+                .orElseThrow(() -> new RuntimeException("User not found"));
         String token = tokenService.generateToken(user);
 
         AuthenticationResponse authenticationResponse = new AuthenticationResponse();
@@ -89,19 +89,22 @@ public class AuthenticationService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return (UserDetails) authenticationRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Account not found"));
+        return (UserDetails) authenticationRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Account not found"));
     }
 
-
-    //update
     public User updateProfile(UpdateRequest updateRequest, long id) {
-        User user = authenticationRepository.findById(id);
+        User user = authenticationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         user.setFullName(updateRequest.getFullName());
         user.setEmail(updateRequest.getEmail());
         user.setPhone(updateRequest.getPhone());
         user.setBirthday(updateRequest.getBirthday());
-        user.setGender(updateRequest.isGender());
+        user.setGender(updateRequest.getGender());
+        user.setImgurl(updateRequest.getImgurl());
+        user.setAddress(updateRequest.getAddress());
+        user.setBio(updateRequest.getBio());
 
         return authenticationRepository.save(user);
     }
@@ -115,7 +118,8 @@ public class AuthenticationService implements UserDetailsService {
         if (!userRepository.existsByEmail(email)) {
             return new ResponseEntity<>("The user with this email doesn't exist", HttpStatus.BAD_REQUEST);
         }
-        User user = userRepository.findByEmail(email).get();
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         String token = UUID.randomUUID().toString();
         PasswordResetToken myToken = new PasswordResetToken(token, user);
@@ -131,7 +135,8 @@ public class AuthenticationService implements UserDetailsService {
             return new ResponseEntity<>("This token doesn't exist", HttpStatus.BAD_REQUEST);
         }
 
-        PasswordResetToken resetToken = passwordTokenRepository.findByToken(token).get();
+        PasswordResetToken resetToken = passwordTokenRepository.findByToken(token)
+                .orElseThrow(() -> new RuntimeException("Token not found"));
         if (isPasswordResetTokenExpired(resetToken)) {
             return new ResponseEntity<>("This token is expired.", HttpStatus.BAD_REQUEST);
         }
@@ -154,5 +159,26 @@ public class AuthenticationService implements UserDetailsService {
         }
 
         return isExpired;
+    }
+
+    public void deleteUserById(Long id) {
+        userRepository.deleteById(id);
+    }
+    public User createAdmin(UserRegisterRequest userRegisterRequest) {
+        User user = new User();
+        user.setFullName(userRegisterRequest.getFullName());
+        user.setEmail(userRegisterRequest.getEmail());
+        user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
+        user.setRole(ERole.ROLE_ADMIN);
+
+        return authenticationRepository.save(user);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public Optional<User> getUserById(long id){
+        return userRepository.findById(id);
     }
 }

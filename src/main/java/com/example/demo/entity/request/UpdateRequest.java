@@ -1,5 +1,6 @@
 package com.example.demo.entity.request;
 
+import com.example.demo.enums.EGender;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
@@ -12,9 +13,9 @@ public class UpdateRequest {
     public String email;
     @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
-    @JsonFormat(pattern = "MM/dd/yyyy")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate birthday;
-    public boolean Gender;
+    public EGender gender;
     public String imgurl;
     public String address;
     public String bio;
@@ -22,12 +23,12 @@ public class UpdateRequest {
     public UpdateRequest() {
     }
 
-    public UpdateRequest(String fullName, String email, String phone, LocalDate birthday, boolean gender, String imgurl, String address, String bio) {
+    public UpdateRequest(String fullName, String email, String phone, LocalDate birthday, EGender gender, String imgurl, String address, String bio) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
-        Gender = gender;
+        this.gender = gender;
         this.imgurl = imgurl;
         this.address = address;
         this.bio = bio;
@@ -57,12 +58,12 @@ public class UpdateRequest {
         this.phone = phone;
     }
 
-    public boolean isGender() {
-        return Gender;
+    public EGender getGender() {
+        return gender;
     }
 
-    public void setGender(boolean gender) {
-        Gender = gender;
+    public void setGender(EGender gender) {
+        this.gender = gender;
     }
 
     public String getImgurl() {

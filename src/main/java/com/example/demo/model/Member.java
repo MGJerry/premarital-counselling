@@ -50,4 +50,12 @@ public class Member {
     public void setUser(User user) {
         this.user = user;
     }
+
+    public Member() {};
+
+    public Member(User user) {
+        this.membershipType = "couple";
+        this.user = user;
+        this.joinedAt = LocalDateTime.now();
+    }
 }

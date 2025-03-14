@@ -8,8 +8,10 @@ import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
+import com.example.demo.model.Member;
 import com.example.demo.model.PasswordResetToken;
 import com.example.demo.repository.AuthenticationRepository;
+import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PasswordResetTokenRepository;
 import com.example.demo.repository.UserRepository;
 import com.example.demo.util.AuthenUtil;
@@ -46,6 +48,8 @@ public class AuthenticationService implements UserDetailsService {
     private PasswordResetTokenRepository passwordTokenRepository;
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private MemberRepository memberRepository;
 
     public User register(UserRegisterRequest userRegisterRequest) {
         User user = new User();
@@ -57,7 +61,11 @@ public class AuthenticationService implements UserDetailsService {
         user.setRole(ERole.ROLE_USER);
         user.seteStatus(EStatus.APPROVED);
 
-        return authenticationRepository.save(user);
+        User savedUser = authenticationRepository.save(user);
+        Member member = new Member(savedUser);
+        memberRepository.save(member);
+
+        return savedUser;
     }
 
     public AuthenticationResponse login(AuthenticationRequest authenticationRequest) {

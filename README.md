@@ -44,6 +44,9 @@ mvn spring-boot:run
 ```
 
 ## Run following SQL insert statements
+
+every script in ```sql scripts``` directory
+
 ```
 INSERT INTO roles(name) VALUES('ROLE_USER');
 INSERT INTO roles(name) VALUES('ROLE_EXPERT');

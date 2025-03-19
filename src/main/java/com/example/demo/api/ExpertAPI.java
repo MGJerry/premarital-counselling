@@ -40,4 +40,14 @@ public class ExpertAPI {
         Expert expert = expertService.approveExpert( id);
         return ResponseEntity.ok(expert);
     }
+    @PutMapping("/updateMeetingUrl/{id}")
+    public ResponseEntity<Expert> creatMeetingUrl(@RequestBody String url, @PathVariable long id){
+        Expert expert = expertService.updateMeetingUrl(url, id);
+        return ResponseEntity.ok(expert);
+    }
+    @GetMapping("/getMeetingUrl/{id}")
+    public ResponseEntity<String> getMeetingUrl(@PathVariable long id){
+        String MeetingUrl = expertService.getMeetingUrl(id);
+        return ResponseEntity.ok(MeetingUrl);
+    }
 }

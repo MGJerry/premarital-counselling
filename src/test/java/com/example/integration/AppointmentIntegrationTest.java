@@ -5,7 +5,6 @@ import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.payload.request.AppointmentRequest;
-import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
@@ -75,11 +74,11 @@ public class AppointmentIntegrationTest {
         appointmentRequest.setAppointmentDateTime(appointmentTime);
         appointmentRequest.setExpertId(expert.getId());
         appointmentRequest.setNotes("Test appointment");
+        appointmentRequest.setStatus(true);
 
         // Set up headers with authentication
         headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.set("X-User-Id", String.valueOf(member.getId()));
         
         // Generate tokens
         memberToken = tokenService.generateToken(member);
@@ -112,19 +111,18 @@ public class AppointmentIntegrationTest {
         assertEquals("Updated notes", updateResponse.getBody().getNotes());
 
         // Expert approves appointment
-        headers.set("X-User-Id", String.valueOf(expert.getId()));
         headers.setBearerAuth(expertToken);
         
-        HttpEntity<String> acceptRequest = new HttpEntity<>(headers);
+        HttpEntity<AppointmentRequest> acceptRequest = new HttpEntity<>(appointmentRequest, headers);
         ResponseEntity<Appointment> acceptResponse = restTemplate.exchange(
-                "/api/appointments/" + appointmentId + "/status?status=APPROVED",
+                "/api/appointments/" + appointmentId + "/status",
                 HttpMethod.PUT,
                 acceptRequest,
                 Appointment.class
         );
 
         assertEquals(HttpStatus.OK, acceptResponse.getStatusCode());
-        assertEquals(EStatus.APPROVED, acceptResponse.getBody().getStatus());
+        assertTrue(acceptResponse.getBody().isStatus());
 
         // View appointment
         ResponseEntity<Appointment> viewResponse = restTemplate.exchange(
@@ -136,12 +134,11 @@ public class AppointmentIntegrationTest {
 
         assertEquals(HttpStatus.OK, viewResponse.getStatusCode());
         assertNotNull(viewResponse.getBody());
-        assertEquals(EStatus.APPROVED, viewResponse.getBody().getStatus());
+        assertTrue(viewResponse.getBody().isStatus());
 
         // Delete appointment
-        headers.set("X-User-Id", String.valueOf(member.getId()));
         headers.setBearerAuth(memberToken);
-        HttpEntity<String> deleteRequest = new HttpEntity<>(headers);
+        HttpEntity<AppointmentRequest> deleteRequest = new HttpEntity<>(appointmentRequest, headers);
         ResponseEntity<Void> deleteResponse = restTemplate.exchange(
                 "/api/appointments/" + appointmentId,
                 HttpMethod.DELETE,

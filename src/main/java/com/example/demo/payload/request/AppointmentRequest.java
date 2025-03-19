@@ -8,11 +8,24 @@ public class AppointmentRequest {
     @NotNull(message = "Expert ID is required")
     private Long expertId;
 
+    @NotNull(message = "Member ID is required")
+    private Long memberId;
+
     @NotNull(message = "Appointment date and time is required")
     @Future(message = "Appointment date must be in the future")
     private LocalDateTime appointmentDateTime;
 
     private String notes;
+
+    private boolean status;
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
+    }
 
     // Getters and Setters
     public Long getExpertId() {
@@ -21,6 +34,14 @@ public class AppointmentRequest {
 
     public void setExpertId(Long expertId) {
         this.expertId = expertId;
+    }
+
+    public Long getMemberId() {
+        return memberId;
+    }
+
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public LocalDateTime getAppointmentDateTime() {

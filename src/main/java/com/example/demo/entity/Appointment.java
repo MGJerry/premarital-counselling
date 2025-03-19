@@ -23,8 +23,7 @@ public class Appointment {
     
     private String notes;
     
-    @Enumerated(EnumType.STRING)
-    private EStatus status = EStatus.PENDING;
+    private boolean status;
     
     private LocalDateTime createdAt;
     
@@ -82,11 +81,11 @@ public class Appointment {
         this.notes = notes;
     }
 
-    public EStatus getStatus() {
+    public boolean isStatus() {
         return status;
     }
 
-    public void setStatus(EStatus status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
 

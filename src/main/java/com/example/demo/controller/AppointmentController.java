@@ -30,9 +30,8 @@ public class AppointmentController {
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Appointment> createAppointment(
-            @Valid @RequestBody AppointmentRequest request,
-            @RequestHeader("X-User-Id") Long memberId) {
-        User member = authenticationRepository.findById(memberId)
+            @Valid @RequestBody AppointmentRequest request) {
+        User member = authenticationRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
         Expert expert = (Expert) authenticationRepository.findById(request.getExpertId())
                 .orElseThrow(() -> new RuntimeException("Expert not found"));
@@ -42,7 +41,7 @@ public class AppointmentController {
         appointment.setMember(member);
         appointment.setExpert(expert);
         appointment.setNotes(request.getNotes());
-        appointment.setStatus(EStatus.PENDING);
+        appointment.setStatus(false);
 
         return ResponseEntity.ok(appointmentRepository.save(appointment));
     }
@@ -51,12 +50,11 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Appointment> updateAppointment(
             @PathVariable("id") Long appointmentId,
-            @Valid @RequestBody AppointmentRequest request,
-            @RequestHeader("X-User-Id") Long memberId) {
+            @Valid @RequestBody AppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         
-        if (!Objects.equals(appointment.getMember().getId(), memberId)) {
+        if (!Objects.equals(appointment.getMember().getId(), request.getMemberId())) {
             throw new RuntimeException("Not authorized to update this appointment");
         }
 
@@ -73,11 +71,11 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<?> deleteAppointment(
             @PathVariable("id") Long appointmentId,
-            @RequestHeader("X-User-Id") Long memberId) {
+            @RequestBody AppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         
-        if (!Objects.equals(appointment.getMember().getId(), memberId)) {
+        if (!Objects.equals(appointment.getMember().getId(), request.getMemberId())) {
             throw new RuntimeException("Not authorized to delete this appointment");
         }
 
@@ -89,24 +87,23 @@ public class AppointmentController {
     @PreAuthorize("hasRole('ROLE_EXPERT')")
     public ResponseEntity<Appointment> updateAppointmentStatus(
             @PathVariable("id") Long appointmentId,
-            @RequestParam EStatus status,
-            @RequestHeader("X-User-Id") Long expertId) {
+            @RequestBody AppointmentRequest request) {
         Appointment appointment = appointmentRepository.findById(appointmentId)
                 .orElseThrow(() -> new RuntimeException("Appointment not found"));
         
-        if (!Objects.equals(appointment.getExpert().getId(), expertId)) {
+        if (!Objects.equals(appointment.getExpert().getId(), request.getExpertId())) {
             throw new RuntimeException("Not authorized to update this appointment status");
         }
 
-        appointment.setStatus(status);
+        appointment.setStatus(request.isStatus());
         return ResponseEntity.ok(appointmentRepository.save(appointment));
     }
 
     @GetMapping("/member")
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<List<Appointment>> getMemberAppointments(
-            @RequestHeader("X-User-Id") Long memberId) {
-        User member = authenticationRepository.findById(memberId)
+            @RequestBody AppointmentRequest request) {
+        User member = authenticationRepository.findById(request.getMemberId())
                 .orElseThrow(() -> new RuntimeException("Member not found"));
         return ResponseEntity.ok(appointmentRepository.findByMember(member));
     }
@@ -114,8 +111,8 @@ public class AppointmentController {
     @GetMapping("/expert")
     @PreAuthorize("hasRole('ROLE_EXPERT')")
     public ResponseEntity<List<Appointment>> getExpertAppointments(
-            @RequestHeader("X-User-Id") Long expertId) {
-        Expert expert = (Expert) authenticationRepository.findById(expertId)
+            @RequestBody AppointmentRequest request) {
+        Expert expert = (Expert) authenticationRepository.findById(request.getExpertId())
                 .orElseThrow(() -> new RuntimeException("Expert not found"));
         return ResponseEntity.ok(appointmentRepository.findByExpert(expert));
     }

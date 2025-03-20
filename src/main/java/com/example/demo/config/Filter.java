@@ -51,6 +51,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/getAllUsers",
             "/api/getUserById/{id}",
             "/api/approveExpert/{id}",
+            "/api/updateMeetingUrl/{id}",
+            "/api/getMeetingUrl/{id}",
             "/api/resetPassword/**"
     );
 

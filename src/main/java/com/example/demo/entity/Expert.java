@@ -12,10 +12,12 @@ import java.time.LocalDate;
 @Entity
 public class Expert extends User{
     public String language;
+    public String GgMeetUrl;
 
-    public Expert(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio, String language) {
+    public Expert(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio, String language, String ggMeetUrl) {
         super(id, username, email, password, fullName, gender, country, address, phone, birthday, imgurl, role, eStatus, bio);
         this.language = language;
+        GgMeetUrl = ggMeetUrl;
     }
 
     public Expert() {
@@ -28,5 +30,13 @@ public class Expert extends User{
 
     public void setLanguage(String language) {
         this.language = language;
+    }
+
+    public String getGgMeetUrl() {
+        return GgMeetUrl;
+    }
+
+    public void setGgMeetUrl(String ggMeetUrl) {
+        GgMeetUrl = ggMeetUrl;
     }
 }

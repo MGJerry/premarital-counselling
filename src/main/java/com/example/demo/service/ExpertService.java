@@ -48,4 +48,15 @@ public class ExpertService {
         approvedExpert.seteStatus(EStatus.APPROVED);
         return expertRepository.save(approvedExpert);
     }
+    public Expert updateMeetingUrl(String url, long id){
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        expert.setGgMeetUrl(url);
+        return expertRepository.save(expert);
+    }
+    public String getMeetingUrl(long id){
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return expert.getGgMeetUrl();
+    }
 }

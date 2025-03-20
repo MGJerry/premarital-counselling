@@ -34,7 +34,7 @@ public class SecurityConfig {
     //kiểu dữ liệu trả về + tên hàm
     //xài AutoWire để tạo instance của class này
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder passwordEcoder() {
         return new BCryptPasswordEncoder();
     }
 

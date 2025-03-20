@@ -1,10 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.AssessmentCategory;
+import com.example.demo.entity.response.ServicePackageResponse;
 import com.example.demo.model.ServicePackage;
-import com.example.demo.payload.request.AssessmentCategoryRequest;
 import com.example.demo.payload.request.ServicePackageRequest;
-import com.example.demo.service.AssessmentCategoryService;
 import com.example.demo.service.ServicePackageService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,5 +42,16 @@ public class ServicePackageController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteService(@PathVariable Long id) {
         return servicePackageService.deleteService(id);
+    }
+
+
+    @GetMapping("/extra")
+    public ResponseEntity<List<ServicePackageResponse>> getAllServiceExtras() {
+        return servicePackageService.getAllServiceExtras();
+    }
+
+    @GetMapping("/extra/{id}")
+    public ResponseEntity<ServicePackageResponse> getServiceByIdExtra(@PathVariable Long id) {
+        return servicePackageService.getServiceByIdExtra(id);
     }
 }

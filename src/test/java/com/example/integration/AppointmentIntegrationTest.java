@@ -5,6 +5,7 @@ import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.payload.request.AppointmentRequest;
+import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
@@ -14,10 +15,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -73,6 +76,7 @@ public class AppointmentIntegrationTest {
         appointmentRequest = new AppointmentRequest();
         appointmentRequest.setAppointmentDateTime(appointmentTime);
         appointmentRequest.setExpertId(expert.getId());
+        appointmentRequest.setMemberId(member.getId());
         appointmentRequest.setNotes("Test appointment");
         appointmentRequest.setStatus(true);
 
@@ -90,63 +94,75 @@ public class AppointmentIntegrationTest {
     void fullAppointmentFlow() {
         // Create appointment
         HttpEntity<AppointmentRequest> createRequest = new HttpEntity<>(appointmentRequest, headers);
-        ResponseEntity<Appointment> createResponse = restTemplate
-                .postForEntity("/api/appointments", createRequest, Appointment.class);
+        ResponseEntity<ApiResponse> createResponse = restTemplate
+                .exchange("/api/appointments", 
+                        HttpMethod.POST,
+                        createRequest, 
+                        new ParameterizedTypeReference<ApiResponse>() {});
         
         assertEquals(HttpStatus.OK, createResponse.getStatusCode());
         assertNotNull(createResponse.getBody());
-        Long appointmentId = createResponse.getBody().getId();
-
+        assertTrue(createResponse.getBody().isSuccess());
+        
+        Map<String, Object> appointmentMap = (Map<String, Object>) createResponse.getBody().getData();
+        Long appointmentId = ((Number) appointmentMap.get("id")).longValue();
+        
         // Update appointment
         appointmentRequest.setNotes("Updated notes");
         HttpEntity<AppointmentRequest> updateRequest = new HttpEntity<>(appointmentRequest, headers);
-        ResponseEntity<Appointment> updateResponse = restTemplate.exchange(
+        ResponseEntity<ApiResponse> updateResponse = restTemplate.exchange(
                 "/api/appointments/" + appointmentId,
                 HttpMethod.PUT,
                 updateRequest,
-                Appointment.class
+                new ParameterizedTypeReference<ApiResponse>() {}
         );
 
         assertEquals(HttpStatus.OK, updateResponse.getStatusCode());
-        assertEquals("Updated notes", updateResponse.getBody().getNotes());
+        assertTrue(updateResponse.getBody().isSuccess());
+        appointmentMap = (Map<String, Object>) updateResponse.getBody().getData();
+        assertEquals("Updated notes", appointmentMap.get("notes"));
 
         // Expert approves appointment
         headers.setBearerAuth(expertToken);
         
         HttpEntity<AppointmentRequest> acceptRequest = new HttpEntity<>(appointmentRequest, headers);
-        ResponseEntity<Appointment> acceptResponse = restTemplate.exchange(
+        ResponseEntity<ApiResponse> acceptResponse = restTemplate.exchange(
                 "/api/appointments/" + appointmentId + "/status",
                 HttpMethod.PUT,
                 acceptRequest,
-                Appointment.class
+                new ParameterizedTypeReference<ApiResponse>() {}
         );
 
         assertEquals(HttpStatus.OK, acceptResponse.getStatusCode());
-        assertTrue(acceptResponse.getBody().isStatus());
+        assertTrue(acceptResponse.getBody().isSuccess());
+        appointmentMap = (Map<String, Object>) acceptResponse.getBody().getData();
+        assertTrue((Boolean) appointmentMap.get("status"));
 
         // View appointment
-        ResponseEntity<Appointment> viewResponse = restTemplate.exchange(
+        ResponseEntity<ApiResponse> viewResponse = restTemplate.exchange(
                 "/api/appointments/" + appointmentId,
                 HttpMethod.GET,
                 new HttpEntity<>(headers),
-                Appointment.class
+                new ParameterizedTypeReference<ApiResponse>() {}
         );
 
         assertEquals(HttpStatus.OK, viewResponse.getStatusCode());
-        assertNotNull(viewResponse.getBody());
-        assertTrue(viewResponse.getBody().isStatus());
+        assertTrue(viewResponse.getBody().isSuccess());
+        appointmentMap = (Map<String, Object>) viewResponse.getBody().getData();
+        assertTrue((Boolean) appointmentMap.get("status"));
 
         // Delete appointment
         headers.setBearerAuth(memberToken);
         HttpEntity<AppointmentRequest> deleteRequest = new HttpEntity<>(appointmentRequest, headers);
-        ResponseEntity<Void> deleteResponse = restTemplate.exchange(
+        ResponseEntity<ApiResponse> deleteResponse = restTemplate.exchange(
                 "/api/appointments/" + appointmentId,
                 HttpMethod.DELETE,
                 deleteRequest,
-                Void.class
+                new ParameterizedTypeReference<ApiResponse>() {}
         );
 
         assertEquals(HttpStatus.OK, deleteResponse.getStatusCode());
+        assertTrue(deleteResponse.getBody().isSuccess());
         assertFalse(appointmentRepository.existsById(appointmentId));
     }
 } 

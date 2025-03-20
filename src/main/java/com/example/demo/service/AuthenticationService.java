@@ -176,6 +176,7 @@ public class AuthenticationService implements UserDetailsService {
         User user = new User();
         user.setFullName(userRegisterRequest.getFullName());
         user.setEmail(userRegisterRequest.getEmail());
+        user.setUsername(userRegisterRequest.getEmail());
         user.setPassword(passwordEncoder.encode(userRegisterRequest.getPassword()));
         user.setRole(ERole.ROLE_ADMIN);
 

@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.response.ServicePackageResponse;
 import com.example.demo.model.ServicePackage;
 import com.example.demo.payload.request.ServicePackageRequest;
 import com.example.demo.repository.ServicePackageRepository;
@@ -9,8 +10,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -77,5 +80,46 @@ public class ServicePackageService {
             return new ResponseEntity<>("Success", HttpStatus.OK);
         }
         return new ResponseEntity<>("Service not found", BAD_REQUEST);
+    }
+
+    //extra stuff
+    public ResponseEntity<List<ServicePackageResponse>> getAllServiceExtras() {
+        return new ResponseEntity<>(serviceRepository.findAll().stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList()), HttpStatus.OK);
+    }
+
+    public ResponseEntity<ServicePackageResponse> getServiceByIdExtra(Long id) {
+        try {
+            return new ResponseEntity<>(mapToResponse(serviceRepository.findByPackageId(id).get()), HttpStatus.OK);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(new ServicePackageResponse(), BAD_REQUEST);
+    }
+
+    private ServicePackageResponse mapToResponse(ServicePackage servicePackage) {
+        BigDecimal discountMultiplier = BigDecimal.ONE.subtract(
+                servicePackage.getDiscountPercentage().divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP)
+        );
+        BigDecimal total = servicePackage.getPrice().multiply(discountMultiplier);
+        BigDecimal commissionShare = total.multiply(servicePackage.getCommissionFee());
+        BigDecimal expertShare = total.subtract(commissionShare);
+
+        return new ServicePackageResponse(
+                servicePackage.getPackageId(),
+                servicePackage.getName(),
+                servicePackage.getDescription(),
+                servicePackage.getSessionCount(),
+                servicePackage.getValidityDays(),
+                servicePackage.getPrice(),
+                servicePackage.getCommissionFee(),
+                servicePackage.getDiscountPercentage(),
+                servicePackage.getRequirements(),
+                servicePackage.getStatus(),
+                total,
+                commissionShare,
+                expertShare
+        );
     }
 }

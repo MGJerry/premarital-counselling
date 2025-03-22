@@ -32,10 +32,12 @@ public class EmailService {
     public void sendResetPasswordEmail(String recipient, String token){
         String subject = "[PCS] - Reset Password Request";
 
-        String resetLink = "http://localhost:8080/api/resetPassword/" + token;
+        String resetLink = "http://localhost:5173/resetPassword/" + token;
         String body = "Hi " + userRepository.findByEmail(recipient).get().getFullName() + ",\n\n" +
                 "We received a request to reset your password.\n\n" +
-                "Please click the link below to reset your password:\n" +
+                "Here is your reset password token:\n\n" +
+                token + "\n\n" +
+                "Alternatively, click the link below to reset your password:\n" +
                 resetLink + "\n\n" +
                 "If you did not request this, please ignore this email.\n\n" +
                 "Best regards,\nYour Support Team";

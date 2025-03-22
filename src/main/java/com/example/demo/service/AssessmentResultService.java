@@ -172,7 +172,6 @@ public class AssessmentResultService {
 
     private static final List<String> RECOMMENDATIONS = List.of(
             "Schedule weekly relationship check-ins to ensure both partners feel heard and valued.",
-            "Try the 'Five Love Languages' test together to understand how to express affection more effectively.",
             "Create a financial plan together, setting clear goals for savings, expenses, and investments.",
             "Engage in active listening exercises to enhance communication skills.",
             "Attend a couples' workshop or retreat to strengthen your bond and learn new relationship skills.",

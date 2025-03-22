@@ -107,7 +107,6 @@ public class AssessmentResultService {
 
     //todo: make the grading thingy-a-magik
     public Double calculateAssessmentScore(Long id, List<Integer> answers) {
-        int correct = 0;
         Double score = 0.0;
         if (answers.isEmpty()) {
             //return correct;
@@ -116,18 +115,26 @@ public class AssessmentResultService {
         try {
             Assessment assessment = assessmentRepository.findById(id).get();
             List<AssessmentQuestion> questions = assessment.getQuestions();
-            int i = 0;
-            for(Integer answer : answers) {
-                if(answer.equals(questions.get(i).getAnswer())){
-                    correct += 1;
-                    score += questions.get(i).getWeight();
+
+            for (int i = 0; i < questions.size(); i++) {
+                AssessmentQuestion question = questions.get(i);
+
+                if (i < answers.size()) {
+                    int selectedIndex = answers.get(i); // Selected option index
+
+                    List<String> optionKeys = question.getOptions().keySet().stream().toList(); // Get options as a list
+
+                    if (selectedIndex >= 0 && selectedIndex < optionKeys.size()) {
+                        String selectedOption = optionKeys.get(selectedIndex); // Get option text
+                        Double optionWeight = question.getOptions().getOrDefault(selectedOption, 0.0);
+
+                        score += optionWeight;
+                    }
                 }
-                i+=1;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //return correct;
         return score;
     }
 

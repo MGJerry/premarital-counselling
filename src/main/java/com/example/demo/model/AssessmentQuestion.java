@@ -2,7 +2,7 @@ package com.example.demo.model;
 
 import jakarta.persistence.*;
 
-import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "AssessmentQuestions")
@@ -15,9 +15,12 @@ public class AssessmentQuestion {
     private String content;
     private String questionType;
     @ElementCollection
-    private List<String> options;
+    @CollectionTable(name = "assessment_question_options",
+            joinColumns = @JoinColumn(name = "question_id"))
+    @MapKeyColumn(name = "option_text")
+    @Column(name = "weight")
+    private Map<String, Double> options; // Key: option text, Value: weight
     private Integer answer;
-    private Double weight;
     private Boolean required;
     private String status;
 
@@ -45,11 +48,11 @@ public class AssessmentQuestion {
         this.questionType = questionType;
     }
 
-    public List<String> getOptions() {
+    public Map<String, Double> getOptions() {
         return options;
     }
 
-    public void setOptions(List<String> options) {
+    public void setOptions(Map<String, Double> options) {
         this.options = options;
     }
 
@@ -59,14 +62,6 @@ public class AssessmentQuestion {
 
     public void setAnswer(Integer answer) {
         this.answer = answer;
-    }
-
-    public Double getWeight() {
-        return weight;
-    }
-
-    public void setWeight(Double weight) {
-        this.weight = weight;
     }
 
     public Boolean getRequired() {

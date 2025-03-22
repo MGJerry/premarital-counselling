@@ -65,7 +65,6 @@ public class AssessmentQuestionService {
             question.setQuestionType(request.questionType);
             question.setOptions(request.options);
             question.setAnswer(request.answer);
-            question.setWeight(request.weight);
             question.setRequired(request.required);
             question.setStatus(request.status);
             Optional<AssessmentCategory> temp = categoryRepository.findByName(request.category);
@@ -88,7 +87,6 @@ public class AssessmentQuestionService {
             question.setQuestionType(request.questionType);
             question.setOptions(request.options);
             question.setAnswer(request.answer);
-            question.setWeight(request.weight);
             question.setRequired(request.required);
             question.setStatus(request.status);
             Optional<AssessmentCategory> temp = categoryRepository.findByName(request.category);

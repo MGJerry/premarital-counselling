@@ -49,7 +49,7 @@ INSERT INTO assessment_questions (content, question_type, required, status, cate
 ('Do you and your partner use humor to diffuse conflicts?', 'MULTIPLE_CHOICE', TRUE, 'ACTIVE', 3);
 
 -- Insert Assessment Question Options
-INSERT INTO assessment_question_options (assessment_question_question_id, options) VALUES
+INSERT INTO assessment_question_options (question_id, option_text, weight) VALUES
 -- Communication
 (1, 'Rarely', 1.0), (1, 'Sometimes', 2.0), (1, 'Often', 3.0), (1, 'Always', 4.0),
 (2, 'Not comfortable at all', 1.0), (2, 'Somewhat comfortable', 2.0), (2, 'Very comfortable', 3.0),
@@ -64,7 +64,7 @@ INSERT INTO assessment_question_options (assessment_question_question_id, option
 
 -- Financial Compatibility
 (11, 'No, we don’t have a budget', 1.0), (11, 'Yes, we have a budget', 2.0),
-(12, 'We argue about money', 1.0), (12, 'We compromise'), (12, 'We avoid talking about money', 2.0),
+(12, 'We argue about money', 1.0), (12, 'We compromise', 2.0), (12, 'We avoid talking about money', 3.0),
 (13, 'Not at all', 1.0), (13, 'Somewhat', 2.0), (13, 'Completely', 3.0),
 (14, 'Rarely', 1.0), (14, 'Sometimes', 2.0), (14, 'Often', 3.0), (14, 'Always', 4.0),
 (15, 'No, we make decisions individually', 1.0), (15, 'Sometimes', 2.0), (15, 'Yes, always together', 3.0),
@@ -77,7 +77,7 @@ INSERT INTO assessment_question_options (assessment_question_question_id, option
 -- Conflict Resolution
 (21, 'We ignore it', 1.0), (21, 'We talk about it', 2.0), (21, 'We argue', 3.0),
 (22, 'No, I avoid apologizing', 1.0), (22, 'Yes, I apologize when wrong', 2.0),
-(23, 'Never', 1.0), (23, 'Sometimes', 2.0), (23, 'Often', 3.0), (23, 'Always', 4.0);
+(23, 'Never', 1.0), (23, 'Sometimes', 2.0), (23, 'Often', 3.0), (23, 'Always', 4.0),
 (24, 'No, we keep arguing', 1.0), (24, 'Sometimes', 2.0), (24, 'Yes, we take breaks', 3.0),
 (25, 'I take it personally', 1.0), (25, 'I listen and respond calmly', 2.0), (25, 'I avoid the topic', 3.0),
 (26, 'Never', 1.0), (26, 'Sometimes', 2.0), (26, 'Often', 3.0),
@@ -94,3 +94,25 @@ INSERT INTO assessment_question_mapping (assessment_id, question_id) VALUES
 (2, 11), (2, 12), (2, 13), (2, 14), (2, 15), (2, 16), (2, 17), (2, 18), (2, 19), (2, 20),
 -- Conflict Resolution
 (3, 21), (3, 22), (3, 23), (3, 24), (3, 25), (3, 26), (3, 27), (3, 28), (3, 29), (3, 30);
+
+-- Insert Quiz Interpretations for Communication
+INSERT INTO assessment_interpretations (min_score, max_score, interpretation, recommendation, category_id) VALUES
+(0, 39, 'Communication challenges may be affecting your relationship.', 'Work on active listening and expressing feelings honestly. Consider setting aside regular time for open discussions.', 1),
+(30, 50, 'You communicate, but there are barriers to full openness.', 'Try identifying patterns in your conversations that may cause misunderstandings. Practicing empathy can help.', 1),
+(50, 70, 'Your communication is generally good, but there’s room for improvement.', 'Explore each other’s love languages and ensure that both of you feel heard and validated.', 1),
+(60, 80, 'You and your partner communicate effectively most of the time.', 'Keep nurturing this connection by discussing deep topics and ensuring you remain emotionally available.', 1),
+(75, 100, 'Your communication is strong, fostering deep connection and understanding.', 'Maintain this strength by continuously checking in with each other’s emotions and needs.', 1),
+
+-- Insert Quiz Interpretations for Financial Compatibility
+(0, 39, 'Significant financial differences may cause friction in your relationship.', 'Have an open discussion about financial expectations and goals. Consider setting shared financial rules.', 2),
+(30, 50, 'You have some financial compatibility but may disagree on spending and saving.', 'Try budgeting together and discussing financial decisions more frequently to align your goals.', 2),
+(50, 70, 'Your financial views align in some areas but differ in others.', 'Ensure transparency in financial matters and plan future financial commitments together.', 2),
+(60, 80, 'You and your partner have a strong financial understanding.', 'Keep up the good work by periodically revisiting financial goals and adjusting as needed.', 2),
+(75, 100, 'You and your partner are financially compatible and make decisions smoothly.', 'Consider working on long-term financial investments together, such as property or retirement plans.', 2),
+
+-- Insert Quiz Interpretations for Conflict Resolution
+(0, 39, 'Conflict resolution is a major challenge, leading to unresolved issues.', 'Focus on improving conflict management by using "I" statements and listening without interrupting.', 3),
+(30, 50, 'You attempt to resolve conflicts but often struggle to find common ground.', 'Develop strategies like taking breaks during arguments and seeking compromise instead of "winning" discussions.', 3),
+(50, 70, 'Your conflict resolution skills are moderate, with occasional missteps.', 'Strengthen your ability to express concerns constructively and revisit past conflicts to find better resolutions.', 3),
+(60, 80, 'You handle conflicts well but may have occasional unresolved issues.', 'Keep refining your conflict resolution skills by practicing patience and maintaining mutual respect.', 3),
+(75, 100, 'You and your partner resolve conflicts effectively with mutual respect.', 'Encourage continued openness and understanding by occasionally reflecting on past challenges and how you overcame them.', 3);

@@ -13,10 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 
@@ -31,11 +28,13 @@ public class AssessmentResultService {
     @Autowired
     AssessmentResultRepository resultRepository;
     @Autowired
-    private UserRepository userRepository;
+    UserRepository userRepository;
     @Autowired
-    private MemberRepository memberRepository;
+    MemberRepository memberRepository;
     @Autowired
-    private ExpertRepository expertRepository;
+    ExpertRepository expertRepository;
+    @Autowired
+    AssessmentInterpretationService interpretationService;
 
     public ResponseEntity<List<AssessmentResult>> getAllResults() {
         try {
@@ -91,11 +90,13 @@ public class AssessmentResultService {
         result.setMember(member);
 
         //grading
-        result.setScore(calculateAssessmentScore(id, answers));
+        Map<String, Double> scoreResult = calculateAssessmentScore(id, answers);
+        result.setScore(scoreResult.get("score"));
 
         //random recommendations
-        result.setInterpretation(getRandomElement(INTERPRETATIONS));
-        result.setRecommendations(getRandomElement(RECOMMENDATIONS));
+        Optional<AssessmentInterpretation> interpretationOpt = interpretationService.getInterpretation(assessment.get().getCategory().getName(), scoreResult.get("scorePercentage"));
+        result.setInterpretation(interpretationOpt.get().getInterpretation());
+        result.setRecommendations(interpretationOpt.get().getRecommendation());
         result.setExpertMatches(getRandomExpert());
 
         result.setCreatedAt(LocalDateTime.now());
@@ -106,36 +107,49 @@ public class AssessmentResultService {
     }
 
     //todo: make the grading thingy-a-magik
-    public Double calculateAssessmentScore(Long id, List<Integer> answers) {
-        Double score = 0.0;
+    public Map<String, Double> calculateAssessmentScore(Long id, List<Integer> answers) {
+        double score = 0.0;
+        double maxPossibleScore = 0.0;
+
         if (answers.isEmpty()) {
-            //return correct;
-            return score;
+            return Map.of("score", 0.0, "scorePercentage", 0.0);
         }
+
         try {
-            Assessment assessment = assessmentRepository.findById(id).get();
+            Optional<Assessment> assessmentOpt = assessmentRepository.findById(id);
+            if (assessmentOpt.isEmpty()) {
+                return Map.of("score", 0.0, "scorePercentage", 0.0);
+            }
+
+            Assessment assessment = assessmentOpt.get();
             List<AssessmentQuestion> questions = assessment.getQuestions();
 
             for (int i = 0; i < questions.size(); i++) {
                 AssessmentQuestion question = questions.get(i);
+                Map<String, Double> options = question.getOptions(); // Option weights
 
                 if (i < answers.size()) {
                     int selectedIndex = answers.get(i); // Selected option index
-
-                    List<String> optionKeys = question.getOptions().keySet().stream().toList(); // Get options as a list
+                    List<String> optionKeys = new ArrayList<>(options.keySet()); // Convert map keys to list
 
                     if (selectedIndex >= 0 && selectedIndex < optionKeys.size()) {
-                        String selectedOption = optionKeys.get(selectedIndex); // Get option text
-                        Double optionWeight = question.getOptions().getOrDefault(selectedOption, 0.0);
+                        String selectedOption = optionKeys.get(selectedIndex);
+                        score += options.getOrDefault(selectedOption, 0.0);
 
-                        score += optionWeight;
+                        //debug
+                        // System.out.println("Choice: " + selectedIndex + ", Option Text: " + selectedOption + ", Option Weight: " + options.getOrDefault(selectedOption, 0.0));
                     }
                 }
+
+                // Calculate max possible score (assuming highest-weighted option per question)
+                maxPossibleScore += options.values().stream().max(Double::compare).orElse(0.0);
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return score;
+
+        double scorePercentage = (maxPossibleScore > 0) ? (score / maxPossibleScore) * 100 : 0.0;
+        return Map.of("score", score, "scorePercentage", scorePercentage);
     }
 
     public ResponseEntity<AssessmentResult> updateResult(Long id, UpdateAssessmentResultRequest request) {
@@ -156,36 +170,6 @@ public class AssessmentResultService {
         }
         return new ResponseEntity<>("Result not found", BAD_REQUEST);
     }
-
-    private static final List<String> INTERPRETATIONS = List.of(
-            "You and your partner have a strong emotional connection, but exploring each other's love languages can deepen your bond.",
-            "Your conflict resolution strategies are solid, but practicing patience during disagreements will strengthen your relationship.",
-            "Your financial habits are aligned well, but discussing long-term investments can bring more stability.",
-            "You share similar values, which is a strong foundation for marriage. Continue open communication to maintain harmony.",
-            "Your relationship thrives on trust and understanding. Keep nurturing it with quality time and shared experiences.",
-            "Some areas of your relationship need improvement. Consider engaging in guided discussions on important topics like finances and personal growth.",
-            "Your partner feels appreciated, but showing gratitude more frequently can boost your relationship satisfaction.",
-            "Balancing personal goals and couple goals is key to a long-lasting relationship. Ensure both are aligned.",
-            "Your conflict resolution style is healthy, but focusing on proactive communication can help avoid unnecessary misunderstandings.",
-            "Your responses indicate strong relationship resilience. Keep working together to maintain balance and mutual respect."
-    );
-
-    private static final List<String> RECOMMENDATIONS = List.of(
-            "Schedule weekly relationship check-ins to ensure both partners feel heard and valued.",
-            "Create a financial plan together, setting clear goals for savings, expenses, and investments.",
-            "Engage in active listening exercises to enhance communication skills.",
-            "Attend a couples' workshop or retreat to strengthen your bond and learn new relationship skills.",
-            "Make date nights a priority to keep the romance alive amidst daily responsibilities.",
-            "Read a relationship book together and discuss insights that resonate with both of you.",
-            "Practice expressing appreciation daily to reinforce mutual respect and affection.",
-            "Work on conflict resolution by setting 'cool-down' periods before discussing serious disagreements.",
-            "Develop shared rituals like morning coffee together or bedtime conversations to stay emotionally connected.",
-            "Identify common hobbies to enjoy together and strengthen your connection through shared activities.",
-            "Practice gratitude journaling, noting things you appreciate about each other every day.",
-            "Seek professional counseling if certain issues seem unresolved despite your efforts.",
-            "Establish personal and couple goals to ensure both partners grow individually and together.",
-            "Use 'I' statements during arguments to prevent blame and encourage open dialogue."
-    );
 
     private final Random random = new Random();
 

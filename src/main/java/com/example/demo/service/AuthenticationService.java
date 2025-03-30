@@ -1,12 +1,12 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
 import com.example.demo.enums.EStatus;
+import com.example.demo.exception.DuplicateEmailException;
 import com.example.demo.model.ERole;
 import com.example.demo.model.Member;
 import com.example.demo.model.PasswordResetToken;
@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,6 +51,12 @@ public class AuthenticationService implements UserDetailsService {
     private MemberRepository memberRepository;
 
     public User register(UserRegisterRequest userRegisterRequest) {
+
+        if (authenticationRepository.existsByEmail(userRegisterRequest.getEmail())) {
+            throw new DuplicateEmailException("The email already exists.");
+        }
+
+
         User user = new User();
 
         user.setFullName(userRegisterRequest.getFullName());

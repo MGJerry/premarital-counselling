@@ -40,4 +40,10 @@ public class APIHandleException {
     public ResponseEntity handleAuthenticateException(AuthorizeException exception){
         return new ResponseEntity(exception.getMessage(),HttpStatus.UNAUTHORIZED);
     }
+
+    @ExceptionHandler(DuplicateEmailException.class)
+    public ResponseEntity<String> handleDuplicateEmail(DuplicateEmailException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    }
+
 }

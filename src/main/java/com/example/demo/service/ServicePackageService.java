@@ -138,7 +138,7 @@ public class ServicePackageService {
         String tmnCode = "FIWY31Q4";
         String secretKey = "4APPTF6B5SX37MHP9XJOS8FA5ZZ71GSE";
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
-        String returnURL = "http://localhost:8080/";
+        String returnURL = "http://localhost:5173/userprofile";
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();

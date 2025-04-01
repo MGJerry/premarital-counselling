@@ -6,6 +6,7 @@ import com.example.demo.payload.request.ServicePackageRequest;
 import com.example.demo.service.ServicePackageService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,5 +55,13 @@ public class ServicePackageController {
     public ResponseEntity<ServicePackageResponse> getServiceByIdExtra(@PathVariable Long id) {
         return servicePackageService.getServiceByIdExtra(id);
     }
-
+    @GetMapping("/createPaymentUrl")
+    public ResponseEntity<String> createPaymentUrl( ServicePackage servicePackage) {
+        try{
+            String paymentUrl = servicePackageService.createURLPayment(servicePackage);
+            return ResponseEntity.ok(paymentUrl);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
 }

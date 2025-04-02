@@ -39,7 +39,7 @@ public class ExpertService {
     }
 
     public List<Expert> getAllExperts(){
-        return expertRepository.findAll();
+        return expertRepository.findByStatus(EStatus.APPROVED);
     }
 
     public Expert approveExpert(long id){

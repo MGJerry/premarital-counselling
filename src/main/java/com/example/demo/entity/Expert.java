@@ -3,9 +3,8 @@ package com.example.demo.entity;
 import com.example.demo.enums.EGender;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
-import jakarta.persistence.DiscriminatorValue;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Transient;
+import com.example.demo.model.Specialization;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
@@ -18,7 +17,20 @@ public class Expert extends User{
     // Rating attributes
     private Double averageRating;
     private Integer totalRatings;
-    
+
+    //Specialization
+    @ManyToOne
+    @JoinColumn(name = "specialization_id")
+    private Specialization specialization;
+
+    public Specialization getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(Specialization specialization) {
+        this.specialization = specialization;
+    }
+
     public Expert(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio, String language, String ggMeetUrl) {
         super(id, username, email, password, fullName, gender, country, address, phone, birthday, imgurl, role, eStatus, bio);
         this.language = language;

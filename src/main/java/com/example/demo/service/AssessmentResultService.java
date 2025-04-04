@@ -26,6 +26,8 @@ public class AssessmentResultService {
     @Autowired
     AssessmentRepository assessmentRepository;
     @Autowired
+    SpecializationRepository specializationRepository;
+    @Autowired
     AssessmentResultRepository resultRepository;
     @Autowired
     UserRepository userRepository;
@@ -97,7 +99,9 @@ public class AssessmentResultService {
         Optional<AssessmentInterpretation> interpretationOpt = interpretationService.getInterpretation(assessment.get().getCategory().getName(), scoreResult.get("scorePercentage"));
         result.setInterpretation(interpretationOpt.get().getInterpretation());
         result.setRecommendations(interpretationOpt.get().getRecommendation());
-        result.setExpertMatches(getRandomExpert());
+
+        //result.setExpertMatches(getRandomExpert());
+        result.setExpertMatches(getGoodExpert(assessment.get().getCategory()));
 
         result.setCreatedAt(LocalDateTime.now());
         result.setAssessmentDate(LocalDateTime.now());
@@ -183,6 +187,21 @@ public class AssessmentResultService {
             //placeholder, in case of no experts
             return "Nguyen Van A";
         }
+        return experts.get(random.nextInt(experts.size())).getFullName();
+    }
+
+    private String getGoodExpert(AssessmentCategory category) {
+        List<Specialization> specializations = specializationRepository.findByCategory(category);
+
+        if (specializations.isEmpty()) {
+            throw new RuntimeException("No specialization found. If this occurs, please report to System Admin");
+        }
+
+        List<Expert> experts = new ArrayList<>();
+        for (Specialization specialization : specializations) {
+            experts.addAll(expertRepository.findBySpecialization(specialization));
+        }
+
         return experts.get(random.nextInt(experts.size())).getFullName();
     }
 }

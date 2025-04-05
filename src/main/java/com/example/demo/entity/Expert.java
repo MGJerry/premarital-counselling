@@ -10,6 +10,8 @@ import jakarta.persistence.*;
 public class Expert {
     @Id
     private Long id;
+    public String language;
+    public String GgMeetUrl;
 
     @OneToOne
     @MapsId
@@ -20,8 +22,6 @@ public class Expert {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    public String language;
-    public String GgMeetUrl;
     // Rating attributes
     private Double averageRating;
     private Integer totalRatings;

@@ -15,6 +15,8 @@ public class AssessmentResult {
     @ElementCollection
     private List<Integer> answers;
     private Double score;
+    private Double maxScore;
+    private Double scorePercentage;
     private String interpretation;
     private String recommendations;
     private String expertMatches;
@@ -43,6 +45,22 @@ public class AssessmentResult {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public Double getMaxScore() {
+        return maxScore;
+    }
+
+    public void setMaxScore(Double maxScore) {
+        this.maxScore = maxScore;
+    }
+
+    public Double getScorePercentage() {
+        return scorePercentage;
+    }
+
+    public void setScorePercentage(Double scorePercentage) {
+        this.scorePercentage = scorePercentage;
     }
 
     public String getInterpretation() {

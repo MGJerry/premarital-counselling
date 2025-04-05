@@ -94,6 +94,8 @@ public class AssessmentResultService {
         //grading
         Map<String, Double> scoreResult = calculateAssessmentScore(id, answers);
         result.setScore(scoreResult.get("score"));
+        result.setMaxScore(scoreResult.get("maxPossibleScore"));
+        result.setScorePercentage(scoreResult.get("scorePercentage"));
 
         //random recommendations
         Optional<AssessmentInterpretation> interpretationOpt = interpretationService.getInterpretation(assessment.get().getCategory().getName(), scoreResult.get("scorePercentage"));
@@ -101,7 +103,7 @@ public class AssessmentResultService {
         result.setRecommendations(interpretationOpt.get().getRecommendation());
 
         //result.setExpertMatches(getRandomExpert());
-        result.setExpertMatches(getGoodExpert(assessment.get().getCategory()));
+        result.setExpertMatches(getGoodExpert(assessment.get().getCategory(), scoreResult.get("scorePercentage")));
 
         result.setCreatedAt(LocalDateTime.now());
         result.setAssessmentDate(LocalDateTime.now());
@@ -153,7 +155,7 @@ public class AssessmentResultService {
         }
 
         double scorePercentage = (maxPossibleScore > 0) ? (score / maxPossibleScore) * 100 : 0.0;
-        return Map.of("score", score, "scorePercentage", scorePercentage);
+        return Map.of("score", score, "scorePercentage", scorePercentage, "maxPossibleScore", maxPossibleScore);
     }
 
     public ResponseEntity<AssessmentResult> updateResult(Long id, UpdateAssessmentResultRequest request) {
@@ -190,18 +192,40 @@ public class AssessmentResultService {
         return experts.get(random.nextInt(experts.size())).getFullName();
     }
 
-    private String getGoodExpert(AssessmentCategory category) {
+    private String getGoodExpert(AssessmentCategory category, Double scorePercentage) {
         List<Specialization> specializations = specializationRepository.findByCategory(category);
 
         if (specializations.isEmpty()) {
             throw new RuntimeException("No specialization found. If this occurs, please report to System Admin");
         }
 
-        List<Expert> experts = new ArrayList<>();
-        for (Specialization specialization : specializations) {
-            experts.addAll(expertRepository.findBySpecialization(specialization));
+        // problem severity
+        int specializationLevel = 1; // default value, to prevent errors
+        if (scorePercentage >= 70) {
+            // do nothing
+            specializationLevel = 1;
+        } else if (scorePercentage >= 40) {
+            specializationLevel = 2;
+        } else {
+            specializationLevel = 3;
         }
 
+        List<Expert> experts = new ArrayList<>();
+        for (Specialization specialization : specializations) {
+            List<Expert> tmpEx = expertRepository.findBySpecializationAndSpecializationLevelGreaterThanEqual(specialization, specializationLevel);
+
+            if (tmpEx.isEmpty()) {
+                // no experts with the required specializationLevel or higher
+                experts.addAll(expertRepository.findBySpecialization(specialization));
+            } else {
+                experts.addAll(tmpEx);
+            }
+        }
+
+        if (experts.isEmpty()) {
+            //placeholder, in case of no experts
+            return "Nguyen Van A";
+        }
         return experts.get(random.nextInt(experts.size())).getFullName();
     }
 }

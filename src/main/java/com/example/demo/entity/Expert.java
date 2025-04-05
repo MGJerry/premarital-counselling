@@ -31,6 +31,16 @@ public class Expert extends User{
         this.specialization = specialization;
     }
 
+    private int specializationLevel;
+
+    public int getSpecializationLevel() {
+        return specializationLevel;
+    }
+
+    public void setSpecializationLevel(int specializationLevel) {
+        this.specializationLevel = specializationLevel;
+    }
+
     public Expert(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio, String language, String ggMeetUrl) {
         super(id, username, email, password, fullName, gender, country, address, phone, birthday, imgurl, role, eStatus, bio);
         this.language = language;

@@ -14,4 +14,6 @@ public interface ExpertRepository extends JpaRepository<Expert, Long> {
     Optional<Expert> findById(Long id);
 
     List<Expert> findBySpecialization(Specialization specialization);
+
+    List<Expert> findBySpecializationAndSpecializationLevelGreaterThanEqual(Specialization specialization, int specializationLevel);
 }

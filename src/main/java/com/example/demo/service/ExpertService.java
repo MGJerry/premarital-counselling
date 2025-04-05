@@ -5,6 +5,7 @@ import com.example.demo.entity.request.ExpertRegisterRequest;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.ExpertRepository;
+import com.example.demo.repository.SpecializationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,6 +19,8 @@ public class ExpertService {
     @Autowired
     ExpertRepository expertRepository;
     @Autowired
+    SpecializationRepository specializationRepository;
+    @Autowired
     @Lazy
     PasswordEncoder passwordEncoder;
     public Expert register(ExpertRegisterRequest expertRegisterRequest){
@@ -28,6 +31,8 @@ public class ExpertService {
         expert.setImgurl(expertRegisterRequest.getImgurl());
         expert.setEmail(expertRegisterRequest.getEmail());
         expert.setPassword(passwordEncoder.encode(expertRegisterRequest.getPassword()));
+        expert.setSpecialization(specializationRepository.findByName(expertRegisterRequest.getSpecialization()).orElseThrow(() -> new RuntimeException("Specialization not found")));
+        expert.setSpecializationLevel(expertRegisterRequest.getSpecializationLevel());
         expert.setRole(ERole.ROLE_EXPERT);
         expert.seteStatus(EStatus.PENDING);
 
@@ -44,7 +49,7 @@ public class ExpertService {
 
     public Expert approveExpert(long id){
         Expert approvedExpert = expertRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expert not found"));;
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
         approvedExpert.seteStatus(EStatus.APPROVED);
         return expertRepository.save(approvedExpert);
     }

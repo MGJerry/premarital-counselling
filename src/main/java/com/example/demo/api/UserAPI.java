@@ -25,8 +25,8 @@ public class UserAPI {
 
     //register
     @PostMapping("register")
-    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest user){
-        User newUser = authenticationService.register(user);
+    public ResponseEntity register(@Valid @RequestBody UserRegisterRequest userRegisterRequest){
+        User newUser = authenticationService.register(userRegisterRequest);
         return ResponseEntity.ok(newUser);
     }
 

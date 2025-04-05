@@ -67,7 +67,10 @@ public class AuthenticationService implements UserDetailsService {
         user.seteStatus(EStatus.APPROVED);
 
         User savedUser = authenticationRepository.save(user);
-        Member member = new Member(savedUser);
+
+        Member member = new Member();
+        member.setUser(savedUser);
+
         memberRepository.save(member);
 
         return savedUser;

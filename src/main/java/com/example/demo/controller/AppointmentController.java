@@ -8,6 +8,7 @@ import com.example.demo.payload.request.AppointmentRequest;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
+import com.example.demo.repository.ExpertRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class AppointmentController {
 
     @Autowired
     private AuthenticationRepository authenticationRepository;
+    private ExpertRepository expertRepository;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -36,7 +38,7 @@ public class AppointmentController {
         try {
             User member = authenticationRepository.findById(request.getMemberId())
                     .orElseThrow(() -> new RuntimeException("Member not found"));
-            Expert expert = (Expert) authenticationRepository.findById(request.getExpertId())
+            Expert expert = expertRepository.findById(request.getExpertId())
                     .orElseThrow(() -> new RuntimeException("Expert not found"));
 
             Appointment appointment = new Appointment();
@@ -68,7 +70,7 @@ public class AppointmentController {
                         .body(new ApiResponse(false, "Not authorized to update this appointment", null));
             }
 
-            Expert expert = (Expert) authenticationRepository.findById(request.getExpertId())
+            Expert expert = expertRepository.findById(request.getExpertId())
                     .orElseThrow(() -> new RuntimeException("Expert not found"));
 
             appointment.setAppointmentDateTime(request.getAppointmentDateTime());
@@ -148,7 +150,7 @@ public class AppointmentController {
     public ResponseEntity<?> getExpertAppointments(
             @PathVariable("expertId") Long expertId) {
         try {
-            Expert expert = (Expert) authenticationRepository.findById(expertId)
+            Expert expert = expertRepository.findById(expertId)
                     .orElseThrow(() -> new RuntimeException("Expert not found"));
             List<Appointment> appointments = appointmentRepository.findByExpert(expert);
             return ResponseEntity.ok(new ApiResponse(true, "Expert appointments retrieved successfully", appointments));

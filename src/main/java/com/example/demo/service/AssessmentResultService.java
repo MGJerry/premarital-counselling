@@ -183,14 +183,14 @@ public class AssessmentResultService {
         return list.get(random.nextInt(list.size()));
     }
 
-    private String getRandomExpert() {
-        List<Expert> experts = expertRepository.findAll();
-        if (experts.isEmpty()) {
-            //placeholder, in case of no experts
-            return "Nguyen Van A";
-        }
-        return experts.get(random.nextInt(experts.size())).getFullName();
-    }
+//    private String getRandomExpert() {
+//        List<Expert> experts = expertRepository.findAll();
+//        if (experts.isEmpty()) {
+//            //placeholder, in case of no experts
+//            return "Nguyen Van A";
+//        }
+//        return experts.get(random.nextInt(experts.size())).getFullName();
+//    }
 
     private String getGoodExpert(AssessmentCategory category, Double scorePercentage) {
         List<Specialization> specializations = specializationRepository.findByCategory(category);
@@ -226,6 +226,6 @@ public class AssessmentResultService {
             //placeholder, in case of no experts
             return "Nguyen Van A";
         }
-        return experts.get(random.nextInt(experts.size())).getFullName();
+        return experts.get(random.nextInt(experts.size())).getUser().getFullName();
     }
 }

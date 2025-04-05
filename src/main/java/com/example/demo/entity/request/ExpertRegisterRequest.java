@@ -19,14 +19,20 @@ public class ExpertRegisterRequest {
     public String email;
     @NotBlank(message = "password is required")
     public String password;
+    @NotBlank(message = "specialization is required")
+    public String specialization;
+    @NotBlank(message = "specialization level is required (1 - 3)")
+    public int specializationLevel;
 
-    public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, String email, String password) {
+    public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, String email, String password, String specialization, int specializationLevel) {
         this.fullName = fullName;
         this.userName = userName;
         this.phone = phone;
         this.imgurl = imgurl;
         this.email = email;
         this.password = password;
+        this.specialization = specialization;
+        this.specializationLevel = specializationLevel;
     }
 
     public ExpertRegisterRequest() {
@@ -78,5 +84,21 @@ public class ExpertRegisterRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSpecialization() {
+        return specialization;
+    }
+
+    public void setSpecialization(String specialization) {
+        this.specialization = specialization;
+    }
+
+    public int getSpecializationLevel() {
+        return specializationLevel;
+    }
+
+    public void setSpecializationLevel(int specializationLevel) {
+        this.specializationLevel = specializationLevel;
     }
 }

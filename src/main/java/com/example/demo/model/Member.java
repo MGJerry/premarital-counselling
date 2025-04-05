@@ -13,7 +13,7 @@ public class Member {
 
     @OneToOne
     @MapsId
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     private String membershipType;
@@ -53,9 +53,10 @@ public class Member {
 
     public Member() {};
 
-    public Member(User user) {
-        this.membershipType = "couple";
+    public Member(Long memberId, User user, String membershipType, LocalDateTime joinedAt) {
+        this.memberId = memberId;
         this.user = user;
-        this.joinedAt = LocalDateTime.now();
+        this.membershipType = membershipType;
+        this.joinedAt = joinedAt;
     }
 }

@@ -1,8 +1,6 @@
 package com.example.demo.entity.request;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.*;
 
 public class ExpertRegisterRequest {
     @NotBlank(message = "FullName is required")
@@ -21,7 +19,9 @@ public class ExpertRegisterRequest {
     public String password;
     @NotBlank(message = "specialization is required")
     public String specialization;
-    @NotBlank(message = "specialization level is required (1 - 3)")
+    @NotNull(message = "specialization level is required (1 - 3)")
+    @Min(value = 1, message = "Specialization level must be at least 1")
+    @Max(value = 3, message = "Specialization level must be at most 3")
     public int specializationLevel;
 
     public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, String email, String password, String specialization, int specializationLevel) {

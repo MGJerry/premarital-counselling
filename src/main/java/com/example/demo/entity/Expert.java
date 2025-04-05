@@ -1,19 +1,27 @@
 package com.example.demo.entity;
 
-import com.example.demo.enums.EGender;
-import com.example.demo.enums.EStatus;
-import com.example.demo.model.ERole;
+import com.example.demo.model.Member;
 import com.example.demo.model.Specialization;
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 
-@DiscriminatorValue("EXPERT")
 @Entity
-public class Expert extends User{
+@Table(name = "experts")
+public class Expert {
+    @Id
+    private Long id;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "memberId")
+    private Member member;
+
     public String language;
     public String GgMeetUrl;
-    
     // Rating attributes
     private Double averageRating;
     private Integer totalRatings;
@@ -41,12 +49,16 @@ public class Expert extends User{
         this.specializationLevel = specializationLevel;
     }
 
-    public Expert(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio, String language, String ggMeetUrl) {
-        super(id, username, email, password, fullName, gender, country, address, phone, birthday, imgurl, role, eStatus, bio);
+    public Expert(Long id, User user, Member member, String language, String ggMeetUrl, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
+        this.id = id;
+        this.user = user;
+        this.member = member;
         this.language = language;
         GgMeetUrl = ggMeetUrl;
-        this.averageRating = 0.0;
-        this.totalRatings = 0;
+        this.averageRating = averageRating;
+        this.totalRatings = totalRatings;
+        this.specialization = specialization;
+        this.specializationLevel = specializationLevel;
     }
 
     public Expert() {
@@ -85,7 +97,31 @@ public class Expert extends User{
     public void setTotalRatings(Integer totalRatings) {
         this.totalRatings = totalRatings;
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
+    }
+
     // Method to update rating when a new feedback is added
     public void updateRating(int newRating) {
         if (totalRatings == null) totalRatings = 0;

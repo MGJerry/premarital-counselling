@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.example.demo.enums.EGender;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
+import com.example.demo.model.Member;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +19,7 @@ import java.util.List;
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public long id;
+    public Long id;
     public String username;
     public String email;
     public String password;
@@ -31,12 +32,20 @@ public class User implements UserDetails {
     public String imgurl;
     @Enumerated(EnumType.STRING)
     public ERole role;
+    @Enumerated(EnumType.STRING)
     public EStatus eStatus;
     public String Bio;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Expert expert;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Member member;
+
     public User() {
     }
 
-    public User(long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio) {
+    public User(Long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -61,7 +70,7 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 

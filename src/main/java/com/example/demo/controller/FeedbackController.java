@@ -8,6 +8,7 @@ import com.example.demo.payload.request.FeedbackRequest;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
+import com.example.demo.repository.ExpertRepository;
 import com.example.demo.repository.FeedbackRepository;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -35,6 +36,9 @@ public class FeedbackController {
 
     @Autowired
     private AuthenticationRepository authenticationRepository;
+
+    @Autowired
+    private ExpertRepository expertRepository;
 
     // Create feedback for an appointment
     @PostMapping
@@ -74,7 +78,7 @@ public class FeedbackController {
             // Update expert's rating
             Expert expert = appointment.getExpert();
             expert.updateRating(request.getRating());
-            authenticationRepository.save(expert);
+            expertRepository.save(expert);
 
             return ResponseEntity.ok(new ApiResponse(true, "Feedback submitted successfully", savedFeedback));
         } catch (Exception e) {

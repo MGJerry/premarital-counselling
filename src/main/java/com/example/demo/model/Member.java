@@ -9,8 +9,12 @@ import java.time.LocalDateTime;
 @Table(name = "members")
 public class Member {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+
+    @OneToOne
+    @MapsId
+    @JoinColumn(name = "id")
+    private User user;
 
     private String membershipType;
     private LocalDateTime joinedAt = LocalDateTime.now();
@@ -38,10 +42,6 @@ public class Member {
     public void setJoinedAt(LocalDateTime joinedAt) {
         this.joinedAt = joinedAt;
     }
-
-    @OneToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     public User getUser() {
         return user;

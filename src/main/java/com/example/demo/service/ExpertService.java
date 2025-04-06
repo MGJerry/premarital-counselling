@@ -5,7 +5,10 @@ import com.example.demo.entity.User;
 import com.example.demo.entity.request.ExpertRegisterRequest;
 import com.example.demo.enums.EStatus;
 import com.example.demo.exception.DuplicateEmailException;
+import com.example.demo.model.AssessmentCategory;
 import com.example.demo.model.ERole;
+import com.example.demo.model.Specialization;
+import com.example.demo.repository.AssessmentCategoryRepository;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
 import com.example.demo.repository.SpecializationRepository;
@@ -24,6 +27,8 @@ public class ExpertService {
     ExpertRepository expertRepository;
     @Autowired
     SpecializationRepository specializationRepository;
+    @Autowired
+    AssessmentCategoryRepository assessmentCategoryRepository;
     @Autowired
     @Lazy
     PasswordEncoder passwordEncoder;
@@ -44,18 +49,65 @@ public class ExpertService {
         user.setRole(ERole.ROLE_EXPERT);
         user.seteStatus(EStatus.PENDING);
 
-
         User savedUser = authenticationRepository.save(user);
 
         Expert expert = new Expert();
         expert.setUser(savedUser);
         expert.setId(savedUser.getId());
-        expert.setSpecialization(specializationRepository.findByName(expertRegisterRequest.getSpecialization()).orElseThrow(() -> new RuntimeException("Specialization not found")));
+        
+        // First try to find the specialization by category name
+        Optional<AssessmentCategory> category = assessmentCategoryRepository.findByName(expertRegisterRequest.getSpecialization());
+        
+        try {
+            if (category.isPresent()) {
+                System.out.println("Found category: " + category.get().getName() + " with ID: " + category.get().getCategoryId());
+                // If category exists, find or create a default specialization for this category
+                Optional<Specialization> specialization = specializationRepository.findFirstByCategory(category.get());
+                if (specialization.isPresent()) {
+                    System.out.println("Using specialization: " + specialization.get().getName() + " for category: " + category.get().getName());
+                    expert.setSpecialization(specialization.get());
+                } else {
+                    // If no specialization found for this category, look for one by name
+                    Optional<Specialization> specByName = specializationRepository.findByName(expertRegisterRequest.getSpecialization());
+                    if (specByName.isPresent()) {
+                        System.out.println("Using specialization by name: " + specByName.get().getName());
+                        expert.setSpecialization(specByName.get());
+                    } else {
+                        // Still didn't find a specialization, throw a more specific error
+                        throw new RuntimeException("No specialization found for category: " + category.get().getName() + 
+                                                  ". Please contact system administrator.");
+                    }
+                }
+            } else {
+                // If no category found, try finding specialization directly by name
+                Optional<Specialization> specialization = specializationRepository.findByName(expertRegisterRequest.getSpecialization());
+                if (specialization.isPresent()) {
+                    System.out.println("Using direct specialization: " + specialization.get().getName());
+                    expert.setSpecialization(specialization.get());
+                } else {
+                    // Neither category nor specialization found - throw detailed error
+                    throw new RuntimeException("Specialization or category '" + expertRegisterRequest.getSpecialization() + 
+                                              "' not found. Please select a valid specialization from the dropdown.");
+                }
+            }
+        } catch (Exception e) {
+            // Delete the user if specialization assignment fails
+            authenticationRepository.delete(savedUser);
+            
+            // Re-throw the exception with diagnostic info
+            if (e instanceof RuntimeException) {
+                throw e;
+            } else {
+                throw new RuntimeException("Error assigning specialization: " + e.getMessage());
+            }
+        }
+        
         expert.setSpecializationLevel(expertRegisterRequest.getSpecializationLevel());
 
         Expert savedExpert = expertRepository.save(expert);
         return savedExpert;
     }
+    
     public Optional<Expert> getExpertById(long id){
         return expertRepository.findById(id);
     }
@@ -72,18 +124,20 @@ public class ExpertService {
         authenticationRepository.save(user);
         return approvedExpert;
     }
+    
     public Expert updateMeetingUrl(String url, long id){
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         expert.setGgMeetUrl(url);
         return expertRepository.save(expert);
     }
+    
     public String getMeetingUrl(long id){
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return expert.getGgMeetUrl();
     }
-
+    
     public Expert updateConsultingPrice(long id){
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));

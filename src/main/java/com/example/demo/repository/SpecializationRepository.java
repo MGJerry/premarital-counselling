@@ -10,6 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface SpecializationRepository extends JpaRepository<Specialization, Long> {
-    Optional<Specialization> findByName (String name);
+    Optional<Specialization> findByName(String name);
     List<Specialization> findByCategory(AssessmentCategory category);
+    Optional<Specialization> findFirstByCategory(AssessmentCategory category);
 }

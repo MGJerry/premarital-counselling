@@ -116,3 +116,17 @@ INSERT INTO assessment_interpretations (min_score, max_score, interpretation, re
 (50, 70, 'Your conflict resolution skills are moderate, with occasional missteps.', 'Strengthen your ability to express concerns constructively and revisit past conflicts to find better resolutions.', 3),
 (60, 80, 'You handle conflicts well but may have occasional unresolved issues.', 'Keep refining your conflict resolution skills by practicing patience and maintaining mutual respect.', 3),
 (75, 100, 'You and your partner resolve conflicts effectively with mutual respect.', 'Encourage continued openness and understanding by occasionally reflecting on past challenges and how you overcame them.', 3);
+
+INSERT INTO specializations (category_id, name, description) VALUES
+-- Communication
+(1, 'Communication Skills', 'Helping couples develop clear and effective communication.'),
+(1, 'Emotional Intelligence Coaching', 'Enhancing awareness and empathy for better relationship dynamics.'),
+(1, 'Expectations Management', 'Guiding couples in aligning expectations and avoiding misunderstandings.'),
+
+-- Financial Compatibility
+(2, 'Financial Counseling for Couples', 'Advising couples on money habits, budgeting, and financial goals.'),
+(2, 'Career & Life Goals Alignment', 'Supporting alignment of long-term professional and lifestyle goals.'),
+
+-- Conflict Resolution
+(3, 'Conflict Resolution', 'Equipping couples with tools to navigate disagreements constructively.'),
+(3, 'Family Systems Therapy', 'Understanding how family backgrounds affect conflict patterns.');

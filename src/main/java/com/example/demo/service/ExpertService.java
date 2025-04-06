@@ -4,6 +4,7 @@ import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.ExpertRegisterRequest;
 import com.example.demo.enums.EStatus;
+import com.example.demo.exception.DuplicateEmailException;
 import com.example.demo.model.ERole;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
@@ -30,6 +31,9 @@ public class ExpertService {
     private AuthenticationRepository authenticationRepository;
 
     public Expert register(ExpertRegisterRequest expertRegisterRequest){
+        if (authenticationRepository.existsByEmail(expertRegisterRequest.getEmail())) {
+            throw new DuplicateEmailException("The email already exists.");
+        }
         User user = new User();
         user.setFullName(expertRegisterRequest.getFullName());
         user.setUsername(expertRegisterRequest.getUserName());

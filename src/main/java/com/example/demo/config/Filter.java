@@ -42,6 +42,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/login",
             "/api/register",
             "/api/expertregister",
+            "/api/assessment-categories",
+            "/api/specializations",
             "/api/update/{id}",
             "/api/getExpertById/{id}",
             "/api/getAllExpert",

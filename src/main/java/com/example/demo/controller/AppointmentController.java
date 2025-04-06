@@ -9,6 +9,7 @@ import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
+import com.example.demo.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,10 @@ public class AppointmentController {
 
     @Autowired
     private AuthenticationRepository authenticationRepository;
+    @Autowired
     private ExpertRepository expertRepository;
+    @Autowired
+    private PaymentService paymentService;
 
     @PostMapping
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -170,6 +174,15 @@ public class AppointmentController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new ApiResponse(false, e.getMessage(), null));
+        }
+    }
+    @GetMapping("/createPaymentUrl")
+    public ResponseEntity<String> createPaymentUrl( Expert expert) {
+        try{
+            String paymentUrl = paymentService.createURLPayment(expert);
+            return ResponseEntity.ok(paymentUrl);
+        }catch (Exception e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
         }
     }
 } 

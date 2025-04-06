@@ -1,6 +1,5 @@
 package com.example.demo.api;
 
-import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
 import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;

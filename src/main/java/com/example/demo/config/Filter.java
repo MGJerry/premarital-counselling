@@ -54,6 +54,7 @@ public class Filter extends OncePerRequestFilter {
             "/api/updateMeetingUrl/{id}",
             "/api/getMeetingUrl/{id}",
             "/api/createPaymentUrl",
+            "/api/updateConsultingPrice/{id}",
             "/api/resetPassword/**"
     );
 

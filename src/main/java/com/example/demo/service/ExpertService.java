@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -77,5 +78,19 @@ public class ExpertService {
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return expert.getGgMeetUrl();
+    }
+
+    public Expert updateConsultingPrice(long id){
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if(expert.getSpecializationLevel()==1){
+            expert.setConsultingPrice(BigDecimal.valueOf(500));
+        } else if(expert.getSpecializationLevel()==2){
+            expert.setConsultingPrice(BigDecimal.valueOf(750));
+        } else if(expert.getSpecializationLevel()==3){
+            expert.setConsultingPrice(BigDecimal.valueOf(1000));
+        }
+        expertRepository.save(expert);
+        return expert;
     }
 }

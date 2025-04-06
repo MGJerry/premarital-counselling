@@ -4,6 +4,8 @@ import com.example.demo.model.Member;
 import com.example.demo.model.Specialization;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
+
 
 @Entity
 @Table(name = "experts")
@@ -12,6 +14,7 @@ public class Expert {
     private Long id;
     public String language;
     public String GgMeetUrl;
+    public BigDecimal consultingPrice;
 
     @OneToOne
     @MapsId
@@ -49,12 +52,13 @@ public class Expert {
         this.specializationLevel = specializationLevel;
     }
 
-    public Expert(Long id, User user, Member member, String language, String ggMeetUrl, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
+    public Expert(Long id, String language, String ggMeetUrl, BigDecimal consultingPrice, User user, Member member, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
         this.id = id;
-        this.user = user;
-        this.member = member;
         this.language = language;
         GgMeetUrl = ggMeetUrl;
+        this.consultingPrice = consultingPrice;
+        this.user = user;
+        this.member = member;
         this.averageRating = averageRating;
         this.totalRatings = totalRatings;
         this.specialization = specialization;
@@ -120,6 +124,14 @@ public class Expert {
 
     public void setMember(Member member) {
         this.member = member;
+    }
+
+    public BigDecimal getConsultingPrice() {
+        return consultingPrice;
+    }
+
+    public void setConsultingPrice(BigDecimal consultingPrice) {
+        this.consultingPrice = consultingPrice;
     }
 
     // Method to update rating when a new feedback is added

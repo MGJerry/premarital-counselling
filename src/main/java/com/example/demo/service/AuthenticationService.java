@@ -112,9 +112,7 @@ public class AuthenticationService implements UserDetailsService {
     public User updateProfile(UpdateRequest updateRequest, long id) {
         User user = authenticationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
-        if (authenticationRepository.existsByEmail(updateRequest.getEmail())) {
-            throw new DuplicateEmailException("The email already exists.");
-        }
+
         user.setFullName(updateRequest.getFullName());
         user.setEmail(updateRequest.getEmail());
         user.setPhone(updateRequest.getPhone());
@@ -183,9 +181,6 @@ public class AuthenticationService implements UserDetailsService {
         userRepository.deleteById(id);
     }
     public User createAdmin(UserRegisterRequest userRegisterRequest) {
-        if (authenticationRepository.existsByEmail(userRegisterRequest.getEmail())) {
-            throw new DuplicateEmailException("The email already exists.");
-        }
         User user = new User();
         user.setFullName(userRegisterRequest.getFullName());
         user.setEmail(userRegisterRequest.getEmail());

@@ -1,6 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Expert;
+import com.example.demo.entity.Payment;
+import com.example.demo.model.Member;
+import com.example.demo.repository.ExpertRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.Mac;
@@ -18,7 +23,10 @@ import java.util.UUID;
 
 @Service
 public class PaymentService {
-    public String createURLPayment(Expert expert) throws Exception {
+    @Autowired
+    ExpertRepository expertRepository;
+
+    public String createURLPayment(Expert expert, Member member) throws Exception {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         LocalDateTime createDate = LocalDateTime.now();
         String formattedCreateDate = createDate.format(formatter);
@@ -28,6 +36,13 @@ public class PaymentService {
         String vnpUrl = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
         String returnURL = "http://localhost:5173/payment-success";
         String txnRef = UUID.randomUUID().toString().substring(0, 6);
+
+        Payment payment = new Payment();
+        payment.setExpert(expert);
+        payment.setMember(member);
+        payment.setTxnRef(txnRef);
+        payment.setStatus("PENDING");
+        payment.setCreatedAt(LocalDateTime.now());
 
         String currCode = "VND";
         Map<String, String> vnpParams = new TreeMap<>();
@@ -80,5 +95,13 @@ public class PaymentService {
             result.append(String.format("%02x", b));
         }
         return result.toString();
+    }
+
+    public void updateCommission(Appointment appointment) {
+        if(appointment.isStatus()){
+            Expert expert = appointment.getExpert();
+            expert.addCommissionFromConsulting();
+            expertRepository.save(expert);
+        }
     }
 }

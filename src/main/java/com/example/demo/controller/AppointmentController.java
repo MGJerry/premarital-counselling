@@ -176,13 +176,4 @@ public class AppointmentController {
                     .body(new ApiResponse(false, e.getMessage(), null));
         }
     }
-    @GetMapping("/createPaymentUrl")
-    public ResponseEntity<String> createPaymentUrl( Expert expert) {
-        try{
-            String paymentUrl = paymentService.createURLPayment(expert);
-            return ResponseEntity.ok(paymentUrl);
-        }catch (Exception e){
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        }
-    }
 } 

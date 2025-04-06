@@ -15,6 +15,8 @@ public class Expert {
     public String language;
     public String GgMeetUrl;
     public BigDecimal consultingPrice;
+    @Column(nullable = false)
+    private BigDecimal commission = BigDecimal.ZERO;
 
     @OneToOne
     @MapsId
@@ -52,11 +54,12 @@ public class Expert {
         this.specializationLevel = specializationLevel;
     }
 
-    public Expert(Long id, String language, String ggMeetUrl, BigDecimal consultingPrice, User user, Member member, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
+    public Expert(Long id, String language, String ggMeetUrl, BigDecimal consultingPrice, BigDecimal commission, User user, Member member, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
         this.id = id;
         this.language = language;
         GgMeetUrl = ggMeetUrl;
         this.consultingPrice = consultingPrice;
+        this.commission = commission;
         this.user = user;
         this.member = member;
         this.averageRating = averageRating;
@@ -134,6 +137,14 @@ public class Expert {
         this.consultingPrice = consultingPrice;
     }
 
+    public BigDecimal getCommission() {
+        return commission;
+    }
+
+    public void setCommission(BigDecimal commission) {
+        this.commission = commission;
+    }
+
     // Method to update rating when a new feedback is added
     public void updateRating(int newRating) {
         if (totalRatings == null) totalRatings = 0;
@@ -142,5 +153,12 @@ public class Expert {
         double totalScore = averageRating * totalRatings;
         totalRatings++;
         averageRating = (totalScore + newRating) / totalRatings;
+    }
+    //Method to update commision when appointment status is true
+    public void addCommissionFromConsulting() {
+        if (consultingPrice != null) {
+            BigDecimal twentyPercent = consultingPrice.multiply(BigDecimal.valueOf(0.2));
+            this.commission = this.commission.add(twentyPercent);
+        }
     }
 }

@@ -2,10 +2,8 @@ package com.example.demo.api;
 
 import com.example.demo.entity.Expert;
 import com.example.demo.model.Member;
-import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
 import com.example.demo.repository.MemberRepository;
-import com.example.demo.service.ExpertService;
 import com.example.demo.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

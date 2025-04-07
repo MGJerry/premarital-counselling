@@ -4,6 +4,7 @@ import com.example.demo.model.AssessmentCategory;
 import com.example.demo.model.Member;
 import com.example.demo.model.Specialization;
 import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -21,9 +22,10 @@ public class Expert {
     @Column(nullable = false)
     private BigDecimal commission = BigDecimal.ZERO;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "id")
+    @JsonBackReference
     private User user;
 
     @OneToOne

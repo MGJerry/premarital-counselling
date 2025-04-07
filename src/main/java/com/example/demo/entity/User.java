@@ -7,6 +7,7 @@ import com.example.demo.model.Member;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import java.time.LocalDate;
 import java.util.Collection;
@@ -37,6 +38,7 @@ public class User implements UserDetails {
     public String Bio;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Expert expert;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
@@ -197,5 +199,21 @@ public class User implements UserDetails {
 
     public void setBio(String bio) {
         Bio = bio;
+    }
+
+    public Expert getExpert() {
+        return expert;
+    }
+
+    public void setExpert(Expert expert) {
+        this.expert = expert;
+    }
+
+    public Member getMember() {
+        return member;
+    }
+
+    public void setMember(Member member) {
+        this.member = member;
     }
 }

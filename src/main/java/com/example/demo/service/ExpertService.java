@@ -59,14 +59,9 @@ public class ExpertService {
         user.setPassword(passwordEncoder.encode(expertRegisterRequest.getPassword()));
         user.setRole(ERole.ROLE_EXPERT);
         user.seteStatus(EStatus.PENDING);
-        User savedUser = authenticationRepository.save(user);
-
-        // Create Expert entity
-        Expert expert = new Expert();
-        expert.setUser(savedUser);
-        expert.setId(savedUser.getId());
         
-        // Set specialization level
+        // Create Expert entity first
+        Expert expert = new Expert();
         expert.setSpecializationLevel(expertRegisterRequest.getSpecializationLevel());
         
         // Set consulting price based on specialization level
@@ -99,24 +94,18 @@ public class ExpertService {
         if (!notFoundCategories.isEmpty()) {
             String errorMessage = "The following category IDs could not be found: " + 
                     String.join(", ", notFoundCategories.stream().map(String::valueOf).collect(Collectors.toList()));
-                    
-            // Delete the user since expert registration failed
-            authenticationRepository.delete(savedUser);
-            
             throw new IllegalArgumentException(errorMessage);
         }
         
         expert.setCategories(categories);
         
-        // Save and return the expert
-        try {
-            Expert savedExpert = expertRepository.saveAndFlush(expert);
-            return savedExpert;
-        } catch (Exception e) {
-            // If expert saving fails, clean up by deleting the user
-            authenticationRepository.delete(savedUser);
-            throw new RuntimeException("Failed to save expert: " + e.getMessage(), e);
-        }
+        // Set the bidirectional relationship
+        expert.setUser(user);
+        user.setExpert(expert);
+        
+        // Save the user which will cascade to expert
+        User savedUser = authenticationRepository.save(user);
+        return savedUser.getExpert();
     }
     
     public Optional<Expert> getExpertById(long id){

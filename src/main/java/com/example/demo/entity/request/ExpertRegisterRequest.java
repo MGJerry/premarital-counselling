@@ -1,37 +1,48 @@
 package com.example.demo.entity.request;
 
 import jakarta.validation.constraints.*;
+import java.util.List;
 
 public class ExpertRegisterRequest {
     @NotBlank(message = "FullName is required")
     public String fullName;
+    
     @NotBlank(message = "username is required")
     public String userName;
+    
     @NotBlank(message = "phone number is required")
     @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
+    
     @NotBlank(message = "profile picture is required")
     public String imgurl;
+    
     @NotBlank(message = "email is required")
     @Email
     public String email;
+    
     @NotBlank(message = "password is required")
     public String password;
-    @NotBlank(message = "specialization is required")
-    public String specialization;
+    
+    // Changed from specializationId to categoryIds to support multiple skills
+    @NotNull(message = "At least one category is required")
+    @Size(min = 1, message = "At least one category must be selected")
+    public List<Long> categoryIds;
+    
     @NotNull(message = "specialization level is required (1 - 3)")
     @Min(value = 1, message = "Specialization level must be at least 1")
     @Max(value = 3, message = "Specialization level must be at most 3")
     public int specializationLevel;
 
-    public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, String email, String password, String specialization, int specializationLevel) {
+    public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, 
+                                String email, String password, List<Long> categoryIds, int specializationLevel) {
         this.fullName = fullName;
         this.userName = userName;
         this.phone = phone;
         this.imgurl = imgurl;
         this.email = email;
         this.password = password;
-        this.specialization = specialization;
+        this.categoryIds = categoryIds;
         this.specializationLevel = specializationLevel;
     }
 
@@ -86,12 +97,12 @@ public class ExpertRegisterRequest {
         this.password = password;
     }
 
-    public String getSpecialization() {
-        return specialization;
+    public List<Long> getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setSpecialization(String specialization) {
-        this.specialization = specialization;
+    public void setCategoryIds(List<Long> categoryIds) {
+        this.categoryIds = categoryIds;
     }
 
     public int getSpecializationLevel() {

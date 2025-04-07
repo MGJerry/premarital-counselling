@@ -1,10 +1,13 @@
 package com.example.demo.entity;
 
+import com.example.demo.model.AssessmentCategory;
 import com.example.demo.model.Member;
 import com.example.demo.model.Specialization;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -31,7 +34,16 @@ public class Expert {
     private Double averageRating;
     private Integer totalRatings;
 
-    //Specialization
+    // Many-to-many relationship with assessment categories
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+        name = "expert_categories",
+        joinColumns = @JoinColumn(name = "expert_id"),
+        inverseJoinColumns = @JoinColumn(name = "category_id")
+    )
+    private Set<AssessmentCategory> categories = new HashSet<>();
+
+    // Keep specialization temporarily for backward compatibility
     @ManyToOne
     @JoinColumn(name = "specialization_id")
     private Specialization specialization;
@@ -52,6 +64,23 @@ public class Expert {
 
     public void setSpecializationLevel(int specializationLevel) {
         this.specializationLevel = specializationLevel;
+    }
+
+    // New methods to handle categories
+    public Set<AssessmentCategory> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<AssessmentCategory> categories) {
+        this.categories = categories;
+    }
+
+    public void addCategory(AssessmentCategory category) {
+        this.categories.add(category);
+    }
+
+    public void removeCategory(AssessmentCategory category) {
+        this.categories.remove(category);
     }
 
     public Expert(Long id, String language, String ggMeetUrl, BigDecimal consultingPrice, BigDecimal commission, User user, Member member, Double averageRating, Integer totalRatings, Specialization specialization, int specializationLevel) {
@@ -154,6 +183,7 @@ public class Expert {
         totalRatings++;
         averageRating = (totalScore + newRating) / totalRatings;
     }
+    
     //Method to update commision when appointment status is true
     public void addCommissionFromConsulting() {
         if (consultingPrice != null) {

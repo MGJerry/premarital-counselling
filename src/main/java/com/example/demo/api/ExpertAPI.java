@@ -2,9 +2,11 @@ package com.example.demo.api;
 
 import com.example.demo.entity.Expert;
 import com.example.demo.entity.request.ExpertRegisterRequest;
+import com.example.demo.entity.response.ExpertResponse;
 import com.example.demo.exception.DuplicateEmailException;
 import com.example.demo.service.ExpertService;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class ExpertAPI {
     @Autowired
     ExpertService expertService;
     
+    @Autowired
+    private ModelMapper modelMapper;
+    
     //register for Expert
     @PostMapping("expertregister")
     public ResponseEntity<?> register(@Valid @RequestBody ExpertRegisterRequest expertRegisterRequest){
@@ -35,7 +40,18 @@ public class ExpertAPI {
             
             Expert newexpert = expertService.register(expertRegisterRequest);
             logger.info("Expert registration successful for: " + expertRegisterRequest.getEmail());
-            return ResponseEntity.ok(newexpert);
+            
+            ExpertResponse response = modelMapper.map(newexpert, ExpertResponse.class);
+            // Map user information
+            if (newexpert.getUser() != null) {
+                response.setFullName(newexpert.getUser().getFullName());
+                response.setEmail(newexpert.getUser().getEmail());
+                response.setPhone(newexpert.getUser().getPhone());
+                response.setImgurl(newexpert.getUser().getImgurl());
+                response.setRole(newexpert.getUser().getRole());
+                response.setEStatus(newexpert.getUser().geteStatus());
+            }
+            return ResponseEntity.ok(response);
         } catch (DuplicateEmailException e) {
             logger.info("Registration failed: Duplicate email: " + expertRegisterRequest.getEmail());
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -70,27 +86,76 @@ public class ExpertAPI {
     }
     
     @GetMapping("/getExpertById/{id}")
-    public ResponseEntity<Optional<Expert>> getExpert(@PathVariable long id){
-        Optional<Expert> expert = expertService.getExpertById(id);
-        return ResponseEntity.ok(expert);
+    public ResponseEntity<ExpertResponse> getExpert(@PathVariable long id){
+        Optional<Expert> expertOpt = expertService.getExpertById(id);
+        if (expertOpt.isPresent()) {
+            Expert expert = expertOpt.get();
+            ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+            // Map user information
+            if (expert.getUser() != null) {
+                response.setFullName(expert.getUser().getFullName());
+                response.setEmail(expert.getUser().getEmail());
+                response.setPhone(expert.getUser().getPhone());
+                response.setImgurl(expert.getUser().getImgurl());
+                response.setRole(expert.getUser().getRole());
+                response.setEStatus(expert.getUser().geteStatus());
+            }
+            return ResponseEntity.ok(response);
+        }
+        return ResponseEntity.notFound().build();
     }
     
     @GetMapping("/getAllExpert")
-    public ResponseEntity<List<Expert>> getAllExpert(){
+    public ResponseEntity<List<ExpertResponse>> getAllExpert(){
         List<Expert> experts = expertService.getAllExperts();
-        return ResponseEntity.ok(experts);
+        List<ExpertResponse> expertResponses = experts.stream()
+                .map(expert -> {
+                    ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+                    // Map user information
+                    if (expert.getUser() != null) {
+                        response.setFullName(expert.getUser().getFullName());
+                        response.setEmail(expert.getUser().getEmail());
+                        response.setPhone(expert.getUser().getPhone());
+                        response.setImgurl(expert.getUser().getImgurl());
+                        response.setRole(expert.getUser().getRole());
+                        response.setEStatus(expert.getUser().geteStatus());
+                    }
+                    return response;
+                })
+                .toList();
+        return ResponseEntity.ok(expertResponses);
     }
     
     @PutMapping ("/approveExpert/{id}")
-    public ResponseEntity<Expert> approve(@PathVariable long id){
+    public ResponseEntity<ExpertResponse> approve(@PathVariable long id){
         Expert expert = expertService.approveExpert(id);
-        return ResponseEntity.ok(expert);
+        ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+        // Map user information
+        if (expert.getUser() != null) {
+            response.setFullName(expert.getUser().getFullName());
+            response.setEmail(expert.getUser().getEmail());
+            response.setPhone(expert.getUser().getPhone());
+            response.setImgurl(expert.getUser().getImgurl());
+            response.setRole(expert.getUser().getRole());
+            response.setEStatus(expert.getUser().geteStatus());
+        }
+        return ResponseEntity.ok(response);
     }
     
     @PutMapping("/updateMeetingUrl/{id}")
-    public ResponseEntity<Expert> creatMeetingUrl(@RequestBody String url, @PathVariable long id){
+    public ResponseEntity<ExpertResponse> creatMeetingUrl(@RequestBody String url, @PathVariable long id){
         Expert expert = expertService.updateMeetingUrl(url, id);
-        return ResponseEntity.ok(expert);
+        ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+        // Map user information
+        if (expert.getUser() != null) {
+            response.setFullName(expert.getUser().getFullName());
+            response.setEmail(expert.getUser().getEmail());
+            response.setPhone(expert.getUser().getPhone());
+            response.setImgurl(expert.getUser().getImgurl());
+            response.setRole(expert.getUser().getRole());
+            response.setEStatus(expert.getUser().geteStatus());
+        }
+        return ResponseEntity.ok(response);
     }
     
     @GetMapping("/getMeetingUrl/{id}")
@@ -100,8 +165,18 @@ public class ExpertAPI {
     }
     
     @PutMapping("/updateConsultingPrice/{id}")
-    public ResponseEntity<Expert> updateConsultingPrice(@PathVariable long id){
+    public ResponseEntity<ExpertResponse> updateConsultingPrice(@PathVariable long id){
         Expert expert = expertService.updateConsultingPrice(id);
-        return ResponseEntity.ok(expert);
+        ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+        // Map user information
+        if (expert.getUser() != null) {
+            response.setFullName(expert.getUser().getFullName());
+            response.setEmail(expert.getUser().getEmail());
+            response.setPhone(expert.getUser().getPhone());
+            response.setImgurl(expert.getUser().getImgurl());
+            response.setRole(expert.getUser().getRole());
+            response.setEStatus(expert.getUser().geteStatus());
+        }
+        return ResponseEntity.ok(response);
     }
 }

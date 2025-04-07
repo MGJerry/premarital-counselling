@@ -5,9 +5,11 @@ import com.example.demo.entity.request.AuthenticationRequest;
 import com.example.demo.entity.request.UpdateRequest;
 import com.example.demo.entity.request.UserRegisterRequest;
 import com.example.demo.entity.response.AuthenticationResponse;
+import com.example.demo.entity.response.UserResponse;
 import com.example.demo.service.AuthenticationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,9 @@ import java.util.Optional;
 public class UserAPI {
     @Autowired
     AuthenticationService authenticationService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     //register
     @PostMapping("register")
@@ -68,9 +73,12 @@ public class UserAPI {
         return ResponseEntity.ok(newAdmin);
     }
     @GetMapping("/getAllUsers")
-    public ResponseEntity<List<User>> getAllUsers(){
+    public ResponseEntity<List<UserResponse>> getAllUsers(){
         List<User> users = authenticationService.getAllUsers();
-        return ResponseEntity.ok(users);
+        List<UserResponse> userResponses = users.stream()
+                .map(user -> modelMapper.map(user, UserResponse.class))
+                .toList();
+        return ResponseEntity.ok(userResponses);
     }
     @GetMapping("/getUserById/{id}")
     public ResponseEntity<Optional<User>> getUser(@PathVariable long id){

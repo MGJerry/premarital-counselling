@@ -176,4 +176,43 @@ public class AppointmentController {
                     .body(new ApiResponse(false, e.getMessage(), null));
         }
     }
+    
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllAppointments() {
+        try {
+            List<Appointment> appointments = appointmentRepository.findAll();
+            return ResponseEntity.ok(new ApiResponse(true, "All appointments retrieved successfully", appointments));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(false, e.getMessage(), null));
+        }
+    }
+    
+    @PutMapping("/activate/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> activateAppointment(@PathVariable("id") Long appointmentId) {
+        try {
+            Appointment appointment = appointmentRepository.findById(appointmentId)
+                    .orElseThrow(() -> new RuntimeException("Appointment not found"));
+            
+            // Set status to active
+            appointment.setStatus(true);
+            
+            // Save the updated appointment
+            Appointment updatedAppointment = appointmentRepository.save(appointment);
+            
+            // Update expert's commission if the appointment is activated
+            Expert expert = updatedAppointment.getExpert();
+            if (expert != null) {
+                expert.addCommissionFromConsulting();
+                expertRepository.save(expert);
+            }
+            
+            return ResponseEntity.ok(new ApiResponse(true, "Appointment activated successfully", updatedAppointment));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new ApiResponse(false, e.getMessage(), null));
+        }
+    }
 } 

@@ -179,4 +179,26 @@ public class ExpertAPI {
         }
         return ResponseEntity.ok(response);
     }
+    
+    @PutMapping("/rejectExpert/{id}")
+    public ResponseEntity<ExpertResponse> rejectExpert(@PathVariable long id) {
+        Expert expert = expertService.rejectExpert(id);
+        ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+        // Map user information
+        if (expert.getUser() != null) {
+            response.setFullName(expert.getUser().getFullName());
+            response.setEmail(expert.getUser().getEmail());
+            response.setPhone(expert.getUser().getPhone());
+            response.setImgurl(expert.getUser().getImgurl());
+            response.setRole(expert.getUser().getRole());
+            response.setEStatus(expert.getUser().geteStatus());
+        }
+        return ResponseEntity.ok(response);
+    }
+    
+    @DeleteMapping("/deleteExpert/{id}")
+    public ResponseEntity<String> deleteExpert(@PathVariable long id) {
+        expertService.deleteExpert(id);
+        return ResponseEntity.ok("Expert deleted successfully");
+    }
 }

@@ -164,4 +164,31 @@ public class ExpertService {
             .filter(expert -> expert.getCategories().contains(category))
             .collect(Collectors.toList());
     }
+    
+    @Transactional
+    public Expert rejectExpert(long id) {
+        Expert rejectedExpert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        User user = rejectedExpert.getUser();
+        user.seteStatus(EStatus.REJECTED);
+        authenticationRepository.save(user);
+        return rejectedExpert;
+    }
+    
+    @Transactional
+    public void deleteExpert(long id) {
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        
+        // Get the user associated with this expert
+        User user = expert.getUser();
+        
+        // Delete the expert first
+        expertRepository.delete(expert);
+        
+        // Delete the user if it exists
+        if (user != null) {
+            authenticationRepository.delete(user);
+        }
+    }
 }

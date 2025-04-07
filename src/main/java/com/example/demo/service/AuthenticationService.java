@@ -161,6 +161,7 @@ public class AuthenticationService implements UserDetailsService {
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         resetToken.setExpired(true);
+        passwordTokenRepository.save(resetToken);
 
         return new ResponseEntity<>("Password reset successfully!", HttpStatus.OK);
     }

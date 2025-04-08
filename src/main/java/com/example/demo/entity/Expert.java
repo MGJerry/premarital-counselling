@@ -20,7 +20,7 @@ public class Expert {
     public String GgMeetUrl;
     public BigDecimal consultingPrice;
     @Column(nullable = false)
-    private BigDecimal commission = BigDecimal.ZERO;
+    private BigDecimal commission = BigDecimal.ZERO; // Stored as a decimal (e.g., 0.2 for 20%)
 
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId

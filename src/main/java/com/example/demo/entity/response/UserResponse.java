@@ -1,5 +1,6 @@
 package com.example.demo.entity.response;
 
+import com.example.demo.entity.User;
 import com.example.demo.enums.EGender;
 import com.example.demo.enums.EStatus;
 import com.example.demo.model.ERole;
@@ -22,4 +23,22 @@ public class UserResponse {
     private ERole role;
     private EStatus eStatus;
     private String bio;
+    
+    public static UserResponse fromUser(User user) {
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setFullName(user.getFullName());
+        response.setGender(user.getGender());
+        response.setCountry(user.getCountry());
+        response.setAddress(user.getAddress());
+        response.setPhone(user.getPhone());
+        response.setBirthday(user.getBirthday());
+        response.setImgurl(user.getImgurl());
+        response.setRole(user.getRole());
+        response.setEStatus(user.geteStatus());
+        response.setBio(user.getBio());
+        return response;
+    }
 } 

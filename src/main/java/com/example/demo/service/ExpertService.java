@@ -141,20 +141,39 @@ public class ExpertService {
     }
 
     @Transactional
-    public Expert updateConsultingPrice(long id){
+    public Expert updateConsultingPrice(long id, BigDecimal customPrice){
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Expert not found"));
         
-        // Update consulting price based on specialization level
-        if(expert.getSpecializationLevel() == 1){
-            expert.setConsultingPrice(BigDecimal.valueOf(500));
-        } else if(expert.getSpecializationLevel() == 2){
-            expert.setConsultingPrice(BigDecimal.valueOf(750));
-        } else if(expert.getSpecializationLevel() == 3){
-            expert.setConsultingPrice(BigDecimal.valueOf(1000));
+        if (customPrice != null) {
+            // Use the custom price provided
+            expert.setConsultingPrice(customPrice);
+        } else {
+            // Update based on specialization level (default behavior)
+            if(expert.getSpecializationLevel() == 1){
+                expert.setConsultingPrice(BigDecimal.valueOf(500000));
+            } else if(expert.getSpecializationLevel() == 2){
+                expert.setConsultingPrice(BigDecimal.valueOf(750000));
+            } else if(expert.getSpecializationLevel() == 3){
+                expert.setConsultingPrice(BigDecimal.valueOf(1000000));
+            }
         }
         
         // Explicitly merge the entity to handle detached entities
+        return expertRepository.saveAndFlush(expert);
+    }
+    
+    @Transactional
+    public Expert updateExpertCommission(long id, double commissionRate) {
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        
+        // Convert percentage to decimal (e.g., 20% -> 0.2)
+        BigDecimal commissionDecimal = BigDecimal.valueOf(commissionRate / 100.0);
+        
+        // Set the commission rate
+        expert.setCommission(commissionDecimal);
+        
         return expertRepository.saveAndFlush(expert);
     }
     
@@ -190,5 +209,41 @@ public class ExpertService {
         if (user != null) {
             authenticationRepository.delete(user);
         }
+    }
+    
+    @Transactional
+    public Expert updateSpecializationLevel(long id, int specializationLevel) {
+        Expert expert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        
+        // Update specialization level
+        expert.setSpecializationLevel(specializationLevel);
+        
+        // Update consulting price based on new specialization level
+        if(specializationLevel == 1) {
+            expert.setConsultingPrice(BigDecimal.valueOf(500000));
+        } else if(specializationLevel == 2) {
+            expert.setConsultingPrice(BigDecimal.valueOf(750000));
+        } else if(specializationLevel == 3) {
+            expert.setConsultingPrice(BigDecimal.valueOf(1000000));
+        }
+        
+        return expertRepository.saveAndFlush(expert);
+    }
+
+    public Expert updateExpertCategories(Long expertId, List<Long> categoryIds, Double consultingPrice) {
+        Expert expert = expertRepository.findById(expertId)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        
+        List<AssessmentCategory> categories = assessmentCategoryRepository.findAllById(categoryIds);
+        if (categories.size() != categoryIds.size()) {
+            throw new RuntimeException("One or more categories not found");
+        }
+        
+        Set<AssessmentCategory> categorySet = new HashSet<>(categories);
+        expert.setCategories(categorySet);
+        expert.setConsultingPrice(BigDecimal.valueOf(consultingPrice));
+        
+        return expertRepository.save(expert);
     }
 }

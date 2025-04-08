@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -230,6 +231,23 @@ public class ExpertAPI {
     @PutMapping("/rejectExpert/{id}")
     public ResponseEntity<ExpertResponse> rejectExpert(@PathVariable long id) {
         Expert expert = expertService.rejectExpert(id);
+        ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
+        // Map user information
+        if (expert.getUser() != null) {
+            response.setFullName(expert.getUser().getFullName());
+            response.setEmail(expert.getUser().getEmail());
+            response.setPhone(expert.getUser().getPhone());
+            response.setImgurl(expert.getUser().getImgurl());
+            response.setRole(expert.getUser().getRole());
+            response.setEStatus(expert.getUser().geteStatus());
+        }
+        return ResponseEntity.ok(response);
+    }
+    
+    @PutMapping("/deactivateExpert/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<ExpertResponse> deactivateExpert(@PathVariable long id) {
+        Expert expert = expertService.deactivateExpert(id);
         ExpertResponse response = modelMapper.map(expert, ExpertResponse.class);
         // Map user information
         if (expert.getUser() != null) {

@@ -1,0 +1,3 @@
+-- Rollback e_status to VARCHAR if needed
+-- Only run this if you need to rollback V3 migration
+-- ALTER TABLE users MODIFY COLUMN e_status VARCHAR(20) NOT NULL; 

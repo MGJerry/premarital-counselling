@@ -195,6 +195,16 @@ public class ExpertService {
     }
     
     @Transactional
+    public Expert deactivateExpert(long id) {
+        Expert deactivatedExpert = expertRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expert not found"));
+        User user = deactivatedExpert.getUser();
+        user.seteStatus(EStatus.INACTIVE);
+        authenticationRepository.save(user);
+        return deactivatedExpert;
+    }
+    
+    @Transactional
     public void deleteExpert(long id) {
         Expert expert = expertRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Expert not found"));

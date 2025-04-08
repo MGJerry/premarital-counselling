@@ -35,6 +35,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     public ERole role;
     @Enumerated(EnumType.STRING)
+    @Column(name = "e_status", columnDefinition = "ENUM('PENDING', 'APPROVED', 'REJECTED', 'INACTIVE')")
     public EStatus eStatus;
     public String Bio;
 

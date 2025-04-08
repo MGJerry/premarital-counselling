@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -84,5 +85,13 @@ public class UserAPI {
     public ResponseEntity<Optional<User>> getUser(@PathVariable long id){
         Optional<User> user = authenticationService.getUserById(id);
         return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/deactivateUser/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserResponse> deactivateUser(@PathVariable long id) {
+        User user = authenticationService.deactivateUser(id);
+        UserResponse response = modelMapper.map(user, UserResponse.class);
+        return ResponseEntity.ok(response);
     }
 }

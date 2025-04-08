@@ -100,6 +100,7 @@ public class AuthenticationService implements UserDetailsService {
         authenticationResponse.setPhone(user.getPhone());
         authenticationResponse.setRole(user.getRole());
         authenticationResponse.setToken(token);
+        authenticationResponse.seteStatus(user.geteStatus());
         return authenticationResponse;
     }
 

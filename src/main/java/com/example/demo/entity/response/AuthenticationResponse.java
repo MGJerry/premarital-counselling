@@ -1,6 +1,7 @@
 package com.example.demo.entity.response;
 
 import com.example.demo.model.ERole;
+import com.example.demo.enums.EStatus;
 
 public class AuthenticationResponse {
     public long id ;
@@ -10,11 +11,12 @@ public class AuthenticationResponse {
     public String phone;
     public String token;
     public ERole role;
+    public EStatus eStatus;
 
     public AuthenticationResponse() {
     }
 
-    public AuthenticationResponse(long id, String username, String email, String fullName, String phone, String token, ERole role) {
+    public AuthenticationResponse(long id, String username, String email, String fullName, String phone, String token, ERole role, EStatus eStatus) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -22,6 +24,7 @@ public class AuthenticationResponse {
         this.phone = phone;
         this.token = token;
         this.role = role;
+        this.eStatus = eStatus;
     }
 
     public ERole getRole() {
@@ -78,6 +81,14 @@ public class AuthenticationResponse {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public EStatus geteStatus() {
+        return eStatus;
+    }
+
+    public void seteStatus(EStatus eStatus) {
+        this.eStatus = eStatus;
     }
 }
 

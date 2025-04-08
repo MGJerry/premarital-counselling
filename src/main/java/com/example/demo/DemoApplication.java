@@ -1,10 +1,13 @@
 package com.example.demo;
 
+import com.example.demo.service.FilesStorageService;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import jakarta.annotation.Resource;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -13,10 +16,19 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SecurityScheme(name = "api", scheme = "bearer", type = SecuritySchemeType.HTTP, in = SecuritySchemeIn.HEADER)
 @OpenAPIDefinition(info = @Info(title = "Premarital-counselling", version = "1.0", description = "API"))
 @EnableJpaRepositories(basePackages = "com.example.demo.repository")
-public class DemoApplication {
+public class DemoApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
+	// below is image storage server section (too lazy to boot up AWS instance
+	@Resource
+	FilesStorageService storageService;
+
+	@Override
+	public void run(String... arg) throws Exception {
+//    storageService.deleteAll();
+		storageService.init();
+	}
 }

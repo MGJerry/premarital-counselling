@@ -8,6 +8,7 @@ import com.example.demo.model.ERole;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Data
@@ -29,6 +30,9 @@ public class ExpertResponse {
     private String imgurl;
     private ERole role;
     private EStatus eStatus;
+    private LocalDate birthday;
+    private String bio;
+    private Integer age;
     
     // Nested user response
     private UserResponse user;
@@ -53,8 +57,24 @@ public class ExpertResponse {
             response.setImgurl(user.getImgurl());
             response.setRole(user.getRole());
             response.setEStatus(user.geteStatus());
+            response.setBirthday(user.getBirthday());
+            response.setBio(user.getBio());
+            response.setAge(calculateAge(user.getBirthday()));
         }
         
         return response;
+    }
+    
+    private static Integer calculateAge(LocalDate birthday) {
+        if (birthday == null) {
+            return null;
+        }
+        LocalDate today = LocalDate.now();
+        int age = today.getYear() - birthday.getYear();
+        if (today.getMonthValue() < birthday.getMonthValue() || 
+            (today.getMonthValue() == birthday.getMonthValue() && today.getDayOfMonth() < birthday.getDayOfMonth())) {
+            age--;
+        }
+        return age;
     }
 } 

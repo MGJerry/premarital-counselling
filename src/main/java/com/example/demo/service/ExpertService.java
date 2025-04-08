@@ -66,11 +66,11 @@ public class ExpertService {
         
         // Set consulting price based on specialization level
         if(expert.getSpecializationLevel() == 1) {
-            expert.setConsultingPrice(BigDecimal.valueOf(500));
+            expert.setConsultingPrice(BigDecimal.valueOf(500000));
         } else if(expert.getSpecializationLevel() == 2) {
-            expert.setConsultingPrice(BigDecimal.valueOf(750));
+            expert.setConsultingPrice(BigDecimal.valueOf(750000));
         } else if(expert.getSpecializationLevel() == 3) {
-            expert.setConsultingPrice(BigDecimal.valueOf(1000));
+            expert.setConsultingPrice(BigDecimal.valueOf(1000000));
         }
         
         // Find and add all requested categories with improved error handling

@@ -55,6 +55,8 @@ public class ExpertAPI {
                 response.setImgurl(newexpert.getUser().getImgurl());
                 response.setRole(newexpert.getUser().getRole());
                 response.setEStatus(newexpert.getUser().geteStatus());
+                response.setBirthday(newexpert.getUser().getBirthday());
+                response.setBio(newexpert.getUser().getBio());
             }
             return ResponseEntity.ok(response);
         } catch (DuplicateEmailException e) {
@@ -104,6 +106,8 @@ public class ExpertAPI {
                 response.setImgurl(expert.getUser().getImgurl());
                 response.setRole(expert.getUser().getRole());
                 response.setEStatus(expert.getUser().geteStatus());
+                response.setBirthday(expert.getUser().getBirthday());
+                response.setBio(expert.getUser().getBio());
             }
             return ResponseEntity.ok(response);
         }
@@ -124,6 +128,8 @@ public class ExpertAPI {
                         response.setImgurl(expert.getUser().getImgurl());
                         response.setRole(expert.getUser().getRole());
                         response.setEStatus(expert.getUser().geteStatus());
+                        response.setBirthday(expert.getUser().getBirthday());
+                        response.setBio(expert.getUser().getBio());
                     }
                     return response;
                 })
@@ -143,6 +149,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -159,6 +167,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -192,6 +202,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -224,6 +236,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -240,6 +254,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -257,6 +273,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }
@@ -295,6 +313,8 @@ public class ExpertAPI {
             response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
+            response.setBirthday(expert.getUser().getBirthday());
+            response.setBio(expert.getUser().getBio());
         }
         return ResponseEntity.ok(response);
     }

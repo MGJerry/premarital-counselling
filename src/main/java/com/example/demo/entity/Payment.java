@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import com.example.demo.model.Member;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +15,7 @@ public class Payment {
     private String status;
     private String txnRef;
     private LocalDateTime createdAt;
+    private BigDecimal amount;
 
     @ManyToOne
     @JoinColumn(name = "expert_id")
@@ -26,11 +28,12 @@ public class Payment {
     public Payment() {
     }
 
-    public Payment(Long id, String status, String txnRef, LocalDateTime createdAt, Expert expert, Member member) {
+    public Payment(Long id, String status, String txnRef, LocalDateTime createdAt, BigDecimal amount, Expert expert, Member member) {
         this.id = id;
         this.status = status;
         this.txnRef = txnRef;
         this.createdAt = createdAt;
+        this.amount = amount;
         this.expert = expert;
         this.member = member;
     }
@@ -65,6 +68,14 @@ public class Payment {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
     }
 
     public Expert getExpert() {

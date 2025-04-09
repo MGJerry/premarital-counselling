@@ -59,7 +59,8 @@ public class Filter extends OncePerRequestFilter {
             "/api/createPaymentUrl",
             "/api/updateConsultingPrice/{id}",
             "/api/resetPassword/**",
-            "/api/deactivateExpert/{id}"
+            "/api/deactivateExpert/{id}",
+            "/api/payments/vnpay-return"
     );
 
     //nhận bt api nào là api cần phân quyền

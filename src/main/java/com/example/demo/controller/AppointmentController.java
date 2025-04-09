@@ -3,13 +3,11 @@ package com.example.demo.controller;
 import com.example.demo.entity.Appointment;
 import com.example.demo.entity.Expert;
 import com.example.demo.entity.User;
-import com.example.demo.enums.EStatus;
 import com.example.demo.payload.request.AppointmentRequest;
 import com.example.demo.payload.response.ApiResponse;
 import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
-import com.example.demo.service.PaymentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,33 +30,6 @@ public class AppointmentController {
     private AuthenticationRepository authenticationRepository;
     @Autowired
     private ExpertRepository expertRepository;
-    @Autowired
-    private PaymentService paymentService;
-
-    @PostMapping
-    @PreAuthorize("hasRole('ROLE_USER')")
-    public ResponseEntity<?> createAppointment(
-            @Valid @RequestBody AppointmentRequest request) {
-        try {
-            User member = authenticationRepository.findById(request.getMemberId())
-                    .orElseThrow(() -> new RuntimeException("Member not found"));
-            Expert expert = expertRepository.findById(request.getExpertId())
-                    .orElseThrow(() -> new RuntimeException("Expert not found"));
-
-            Appointment appointment = new Appointment();
-            appointment.setAppointmentDateTime(request.getAppointmentDateTime());
-            appointment.setMember(member);
-            appointment.setExpert(expert);
-            appointment.setNotes(request.getNotes());
-            appointment.setStatus(false);
-
-            Appointment savedAppointment = appointmentRepository.save(appointment);
-            return ResponseEntity.ok(new ApiResponse(true, "Appointment created successfully", savedAppointment));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new ApiResponse(false, e.getMessage(), null));
-        }
-    }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -201,13 +172,6 @@ public class AppointmentController {
             
             // Save the updated appointment
             Appointment updatedAppointment = appointmentRepository.save(appointment);
-            
-            // Update expert's commission if the appointment is activated
-            Expert expert = updatedAppointment.getExpert();
-            if (expert != null) {
-                expert.addCommissionFromConsulting();
-                expertRepository.save(expert);
-            }
             
             return ResponseEntity.ok(new ApiResponse(true, "Appointment activated successfully", updatedAppointment));
         } catch (Exception e) {

@@ -11,6 +11,7 @@ import com.example.demo.repository.AssessmentCategoryRepository;
 import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.ExpertRepository;
 import com.example.demo.repository.SpecializationRepository;
+import com.example.demo.repository.AppointmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import com.example.demo.entity.Appointment;
 
 @Service
 public class ExpertService {
@@ -43,6 +45,9 @@ public class ExpertService {
     @Autowired
     private AssessmentCategoryRepository assessmentCategoryRepository;
 
+    @Autowired
+    private AppointmentRepository appointmentRepository;
+
     @Transactional
     public Expert register(ExpertRegisterRequest expertRegisterRequest){
         if (authenticationRepository.existsByEmail(expertRegisterRequest.getEmail())) {
@@ -54,7 +59,6 @@ public class ExpertService {
         user.setFullName(expertRegisterRequest.getFullName());
         user.setUsername(expertRegisterRequest.getUserName());
         user.setPhone(expertRegisterRequest.getPhone());
-        user.setImgurl(expertRegisterRequest.getImgurl());
         user.setEmail(expertRegisterRequest.getEmail());
         user.setPassword(passwordEncoder.encode(expertRegisterRequest.getPassword()));
         user.setRole(ERole.ROLE_EXPERT);
@@ -211,12 +215,26 @@ public class ExpertService {
         
         // Get the user associated with this expert
         User user = expert.getUser();
+
+        // Find and delete all appointments associated with this expert
+        List<Appointment> appointments = appointmentRepository.findByExpert(expert);
+        appointmentRepository.deleteAll(appointments);
         
-        // Delete the expert first
+        // Delete the expert first (or user first, depending on cascade settings)
+        // If User has cascade delete for Expert, deleting User might be enough.
+        // If Expert has cascade delete for User, deleting Expert might be enough.
+        // To be safe, explicitly delete both if there's no cascade or you're unsure.
+
+        // If User owns the relationship with Expert (OneToOne mappedBy = "user"),
+        // deleting User should cascade to Expert if configured.
+        // However, the current code deletes Expert first, then User. Let's stick to that order for now.
+
         expertRepository.delete(expert);
         
         // Delete the user if it exists
         if (user != null) {
+            // Need to delete member appointments too if deleting the user
+            // Check AuthenticationService deleteUserById for consistency
             authenticationRepository.delete(user);
         }
     }

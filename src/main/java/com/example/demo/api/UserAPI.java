@@ -94,4 +94,12 @@ public class UserAPI {
         UserResponse response = modelMapper.map(user, UserResponse.class);
         return ResponseEntity.ok(response);
     }
+
+    @PutMapping("/activateUser/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<UserResponse> activateUser(@PathVariable long id) {
+        User user = authenticationService.activateUser(id);
+        UserResponse response = modelMapper.map(user, UserResponse.class);
+        return ResponseEntity.ok(response);
+    }
 }

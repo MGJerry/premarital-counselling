@@ -52,7 +52,6 @@ public class ExpertAPI {
                 response.setFullName(newexpert.getUser().getFullName());
                 response.setEmail(newexpert.getUser().getEmail());
                 response.setPhone(newexpert.getUser().getPhone());
-                response.setImgurl(newexpert.getUser().getImgurl());
                 response.setRole(newexpert.getUser().getRole());
                 response.setEStatus(newexpert.getUser().geteStatus());
                 response.setBirthday(newexpert.getUser().getBirthday());
@@ -103,7 +102,6 @@ public class ExpertAPI {
                 response.setFullName(expert.getUser().getFullName());
                 response.setEmail(expert.getUser().getEmail());
                 response.setPhone(expert.getUser().getPhone());
-                response.setImgurl(expert.getUser().getImgurl());
                 response.setRole(expert.getUser().getRole());
                 response.setEStatus(expert.getUser().geteStatus());
                 response.setBirthday(expert.getUser().getBirthday());
@@ -125,7 +123,6 @@ public class ExpertAPI {
                         response.setFullName(expert.getUser().getFullName());
                         response.setEmail(expert.getUser().getEmail());
                         response.setPhone(expert.getUser().getPhone());
-                        response.setImgurl(expert.getUser().getImgurl());
                         response.setRole(expert.getUser().getRole());
                         response.setEStatus(expert.getUser().geteStatus());
                         response.setBirthday(expert.getUser().getBirthday());
@@ -146,7 +143,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -164,7 +160,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -199,7 +194,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -233,7 +227,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -251,7 +244,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -270,7 +262,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());
@@ -310,7 +301,6 @@ public class ExpertAPI {
             response.setFullName(expert.getUser().getFullName());
             response.setEmail(expert.getUser().getEmail());
             response.setPhone(expert.getUser().getPhone());
-            response.setImgurl(expert.getUser().getImgurl());
             response.setRole(expert.getUser().getRole());
             response.setEStatus(expert.getUser().geteStatus());
             response.setBirthday(expert.getUser().getBirthday());

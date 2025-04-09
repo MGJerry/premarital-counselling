@@ -14,9 +14,6 @@ public class ExpertRegisterRequest {
     @Pattern(regexp = "(03|05|07|08|09)[0-9]{8}", message = "Invalid phone number format")
     public String phone;
     
-    @NotBlank(message = "profile picture is required")
-    public String imgurl;
-    
     @NotBlank(message = "email is required")
     @Email
     public String email;
@@ -34,12 +31,11 @@ public class ExpertRegisterRequest {
     @Max(value = 3, message = "Specialization level must be at most 3")
     public int specializationLevel;
 
-    public ExpertRegisterRequest(String fullName, String userName, String phone, String imgurl, 
+    public ExpertRegisterRequest(String fullName, String userName, String phone, 
                                 String email, String password, List<Long> categoryIds, int specializationLevel) {
         this.fullName = fullName;
         this.userName = userName;
         this.phone = phone;
-        this.imgurl = imgurl;
         this.email = email;
         this.password = password;
         this.categoryIds = categoryIds;
@@ -71,14 +67,6 @@ public class ExpertRegisterRequest {
 
     public void setPhone(String phone) {
         this.phone = phone;
-    }
-
-    public String getImgurl() {
-        return imgurl;
-    }
-
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
     }
 
     public String getEmail() {

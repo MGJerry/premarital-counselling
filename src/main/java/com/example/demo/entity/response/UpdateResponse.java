@@ -8,20 +8,18 @@ public class UpdateResponse {
     public String phone;
     public LocalDate birthday;
     public boolean Gender;
-    public String imgurl;
     public String address;
     public String bio;
 
     public UpdateResponse() {
     }
 
-    public UpdateResponse(String fullName, String email, String phone, LocalDate birthday, boolean gender, String imgurl, String address, String bio) {
+    public UpdateResponse(String fullName, String email, String phone, LocalDate birthday, boolean gender, String address, String bio) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
         Gender = gender;
-        this.imgurl = imgurl;
         this.address = address;
         this.bio = bio;
     }
@@ -64,14 +62,6 @@ public class UpdateResponse {
 
     public void setGender(boolean gender) {
         Gender = gender;
-    }
-
-    public String getImgurl() {
-        return imgurl;
-    }
-
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
     }
 
     public String getAddress() {

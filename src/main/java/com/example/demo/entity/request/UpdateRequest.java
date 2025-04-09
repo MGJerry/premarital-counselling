@@ -16,20 +16,18 @@ public class UpdateRequest {
     @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate birthday;
     public EGender gender;
-    public String imgurl;
     public String address;
     public String bio;
 
     public UpdateRequest() {
     }
 
-    public UpdateRequest(String fullName, String email, String phone, LocalDate birthday, EGender gender, String imgurl, String address, String bio) {
+    public UpdateRequest(String fullName, String email, String phone, LocalDate birthday, EGender gender, String address, String bio) {
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
         this.birthday = birthday;
         this.gender = gender;
-        this.imgurl = imgurl;
         this.address = address;
         this.bio = bio;
     }
@@ -64,14 +62,6 @@ public class UpdateRequest {
 
     public void setGender(EGender gender) {
         this.gender = gender;
-    }
-
-    public String getImgurl() {
-        return imgurl;
-    }
-
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
     }
 
     public String getAddress() {

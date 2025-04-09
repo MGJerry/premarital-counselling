@@ -31,7 +31,6 @@ public class User implements UserDetails {
     public String address;
     public String phone;
     public LocalDate birthday;
-    public String imgurl;
     @Enumerated(EnumType.STRING)
     public ERole role;
     @Enumerated(EnumType.STRING)
@@ -50,7 +49,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(Long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, String imgurl, ERole role, EStatus eStatus, String bio) {
+    public User(Long id, String username, String email, String password, String fullName, EGender gender, String country, String address, String phone, LocalDate birthday, ERole role, EStatus eStatus, String bio) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -61,7 +60,6 @@ public class User implements UserDetails {
         this.address = address;
         this.phone = phone;
         this.birthday = birthday;
-        this.imgurl = imgurl;
         this.role = role;
         this.eStatus = eStatus;
         Bio = bio;
@@ -178,14 +176,6 @@ public class User implements UserDetails {
 
     public void setBirthday(LocalDate birthday) {
         this.birthday = birthday;
-    }
-
-    public String getImgurl() {
-        return imgurl;
-    }
-
-    public void setImgurl(String imgurl) {
-        this.imgurl = imgurl;
     }
 
     public String getAddress() {

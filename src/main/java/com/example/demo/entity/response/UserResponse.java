@@ -19,7 +19,6 @@ public class UserResponse {
     private String address;
     private String phone;
     private LocalDate birthday;
-    private String imgurl;
     private ERole role;
     private EStatus eStatus;
     private String bio;
@@ -35,7 +34,6 @@ public class UserResponse {
         response.setAddress(user.getAddress());
         response.setPhone(user.getPhone());
         response.setBirthday(user.getBirthday());
-        response.setImgurl(user.getImgurl());
         response.setRole(user.getRole());
         response.setEStatus(user.geteStatus());
         response.setBio(user.getBio());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import com.example.demo.entity.User;
 
 @Repository
 public interface PasswordResetTokenRepository extends JpaRepository<PasswordResetToken, Long> {
@@ -15,4 +16,5 @@ public interface PasswordResetTokenRepository extends JpaRepository<PasswordRese
     boolean existsById (Long id);
     Optional<PasswordResetToken> findByToken (String Token);
     boolean existsByToken (String Token);
+    void deleteByUser(User user);
 }

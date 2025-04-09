@@ -14,7 +14,9 @@ import com.example.demo.repository.AuthenticationRepository;
 import com.example.demo.repository.MemberRepository;
 import com.example.demo.repository.PasswordResetTokenRepository;
 import com.example.demo.repository.UserRepository;
+import com.example.demo.repository.AppointmentRepository;
 import com.example.demo.util.AuthenUtil;
+import com.example.demo.entity.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -50,6 +52,8 @@ public class AuthenticationService implements UserDetailsService {
     private EmailService emailService;
     @Autowired
     private MemberRepository memberRepository;
+    @Autowired
+    private AppointmentRepository appointmentRepository;
 
     public User register(UserRegisterRequest userRegisterRequest) {
 
@@ -120,7 +124,6 @@ public class AuthenticationService implements UserDetailsService {
         user.setPhone(updateRequest.getPhone());
         user.setBirthday(updateRequest.getBirthday());
         user.setGender(updateRequest.getGender());
-        user.setImgurl(updateRequest.getImgurl());
         user.setAddress(updateRequest.getAddress());
         user.setBio(updateRequest.getBio());
 
@@ -180,9 +183,35 @@ public class AuthenticationService implements UserDetailsService {
         return isExpired;
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+        // Check if the user is a member and delete associated appointments
+        if (user.getRole() == ERole.ROLE_USER) {
+            List<Appointment> appointments = appointmentRepository.findByMember(user);
+            if (appointments != null && !appointments.isEmpty()) {
+                appointmentRepository.deleteAll(appointments);
+            }
+        }
+
+        // Additional cleanup if the user is an Expert (though deletion might be handled via ExpertService)
+        if (user.getRole() == ERole.ROLE_EXPERT && user.getExpert() != null) {
+            // Consider if expert deletion logic should solely reside in ExpertService
+            // For now, let's assume deleting the User might cascade or be handled separately.
+            // If we need to delete expert-related appointments here, add:
+            // List<Appointment> expertAppointments = appointmentRepository.findByExpert(user.getExpert());
+            // appointmentRepository.deleteAll(expertAppointments);
+        }
+
+        // Delete associated password reset tokens
+        passwordTokenRepository.deleteByUser(user);
+
+        // Now delete the user (this might cascade to Member/Expert depending on mappings)
         userRepository.deleteById(id);
     }
+
     public User createAdmin(UserRegisterRequest userRegisterRequest) {
         User user = new User();
         user.setFullName(userRegisterRequest.getFullName());
@@ -207,6 +236,14 @@ public class AuthenticationService implements UserDetailsService {
         User user = authenticationRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         user.seteStatus(EStatus.INACTIVE);
+        return authenticationRepository.save(user);
+    }
+
+    @Transactional
+    public User activateUser(long id) {
+        User user = authenticationRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.seteStatus(EStatus.APPROVED);
         return authenticationRepository.save(user);
     }
 }

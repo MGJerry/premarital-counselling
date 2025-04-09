@@ -27,7 +27,6 @@ public class ExpertResponse {
     private String fullName;
     private String email;
     private String phone;
-    private String imgurl;
     private ERole role;
     private EStatus eStatus;
     private LocalDate birthday;
@@ -54,7 +53,6 @@ public class ExpertResponse {
             response.setFullName(user.getFullName());
             response.setEmail(user.getEmail());
             response.setPhone(user.getPhone());
-            response.setImgurl(user.getImgurl());
             response.setRole(user.getRole());
             response.setEStatus(user.geteStatus());
             response.setBirthday(user.getBirthday());

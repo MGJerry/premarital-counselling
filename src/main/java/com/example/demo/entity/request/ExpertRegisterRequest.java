@@ -31,8 +31,12 @@ public class ExpertRegisterRequest {
     @Max(value = 3, message = "Specialization level must be at most 3")
     public int specializationLevel;
 
+    // Add bio field
+    public String bio;
+
     public ExpertRegisterRequest(String fullName, String userName, String phone, 
-                                String email, String password, List<Long> categoryIds, int specializationLevel) {
+                                String email, String password, List<Long> categoryIds, int specializationLevel,
+                                String bio) {
         this.fullName = fullName;
         this.userName = userName;
         this.phone = phone;
@@ -40,9 +44,11 @@ public class ExpertRegisterRequest {
         this.password = password;
         this.categoryIds = categoryIds;
         this.specializationLevel = specializationLevel;
+        this.bio = bio;
     }
 
     public ExpertRegisterRequest() {
+        this.specializationLevel = specializationLevel;
     }
 
     public String getFullName() {
@@ -99,5 +105,14 @@ public class ExpertRegisterRequest {
 
     public void setSpecializationLevel(int specializationLevel) {
         this.specializationLevel = specializationLevel;
+    }
+
+    // Add getter and setter for bio
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 }

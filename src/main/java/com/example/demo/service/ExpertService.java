@@ -63,6 +63,7 @@ public class ExpertService {
         user.setPassword(passwordEncoder.encode(expertRegisterRequest.getPassword()));
         user.setRole(ERole.ROLE_EXPERT);
         user.seteStatus(EStatus.PENDING);
+        user.setBio(expertRegisterRequest.getBio());
         
         // Create Expert entity first
         Expert expert = new Expert();
